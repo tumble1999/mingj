@@ -40,3 +40,7 @@ Gniddos.bin.mount = function(args) {
 Gniddos.bin.debug = function() {
 	console.info(Gniddos);
 }
+
+Gniddos.bin.exit = function() {
+	cheerio();
+}

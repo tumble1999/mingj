@@ -1,0 +1,20 @@
+{
+  "name": "min-gj",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tumble1999/min-gj.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tumble1999/min-gj/issues"
+  },
+  "homepage": "https://github.com/tumble1999/min-gj#readme"
+}

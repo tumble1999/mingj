@@ -12,7 +12,6 @@ Config
 */
 MinGJ.etc.path = ["/bin"];
 MinGJ.etc.cd="/";
-MinGJ.etc.username = "js"
 
 function GDGetObj(path,start) {
 	path = path.split("/").filter((p)=> p!="");
@@ -99,6 +98,13 @@ function Bash(cmd) {
 	} else {
 		console.log("bash: " + args[0] + ": command not found");
 	}
+}
+window.Bash = Bash;
+
+function MGJLogin(username) {
+	MinGJ.etc.username = username;
+	MinGJ.home[username] = {};
+	console.log(`\n${location.hostname} login: ${username}`)
 }
 
 /*

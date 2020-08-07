@@ -1,10 +1,10 @@
-Gniddos.bin.echo = function(args) {
+MinGJ.bin.echo = function(args) {
 	args.shift();
 	console.log(args.join(" "))
 }
 
 
-Gniddos.bin.dir = function(args) {
+MinGJ.bin.dir = function(args) {
 	var path = args.length>1?args[args.length-1]:"."
 	path = GDgetAbsolutePath(path);
 	if(!GDPathExist(path)) {
@@ -14,17 +14,17 @@ Gniddos.bin.dir = function(args) {
 	console.log(Object.keys(things).join(" "))
 }
 
-Gniddos.bin.cd = function(args) {
+MinGJ.bin.cd = function(args) {
 	var path = args.length>1?args[args.length-1]:"."
 	path = GDgetAbsolutePath(path)
-	Gniddos.etc.cd = path;
+	MinGJ.etc.cd = path;
 }
-Gniddos.bin.help = function(args) {
-	Gniddos.etc.path.forEach(p=>Gniddos.bin.dir(["dir",p]));
+MinGJ.bin.help = function(args) {
+	MinGJ.etc.path.forEach(p=>MinGJ.bin.dir(["dir",p]));
 }
 
 // mount /dev/DEVICE PLACE
-Gniddos.bin.mount = function(args) {
+MinGJ.bin.mount = function(args) {
 	if(args.length < 3) {
 		console.log("Usage: mount DEVICE PLACE");
 		return;
@@ -37,14 +37,14 @@ Gniddos.bin.mount = function(args) {
 	GDGetObj(place)[name] = GDGetObj(a);
 }
 
-Gniddos.bin.debug = function() {
-	console.info(Gniddos);
+MinGJ.bin.debug = function() {
+	console.info(MinGJ);
 }
 
-Gniddos.bin.exit = function() {
+MinGJ.bin.exit = function() {
 	cheerio();
 }
-Gniddos.bin.wget = function(args) {
+MinGJ.bin.wget = function(args) {
 	var url = args[1]
 
 	var currentFolder = GDGetObj(GDgetAbsolutePath("."));

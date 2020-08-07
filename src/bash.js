@@ -1,4 +1,4 @@
-var Gniddos = {
+var MinGJ = {
 	bin:{},
 	home:{},
 	mnt:{},
@@ -10,13 +10,14 @@ var Gniddos = {
 Config
 /etc
 */
-Gniddos.etc.path = ["/bin"];
-Gniddos.etc.cd="/";
+MinGJ.etc.path = ["/bin"];
+MinGJ.etc.cd="/";
+MinGJ.etc.username = "js"
 
 function GDGetObj(path,start) {
 	path = path.split("/").filter((p)=> p!="");
 	var parent = [];
-	var file = start||Gniddos;
+	var file = start||MinGJ;
 	for(var folder of path) {
 		if(folder == ".") continue;
 		if(folder == "..") {
@@ -30,12 +31,12 @@ function GDGetObj(path,start) {
 }
 
 function GDgetPrompt() {
-return `${world.player.nickname}@${location.hostname}:${Gniddos.etc.cd}$`
+return `${MinGJ.etc.username}@${location.hostname}:${MinGJ.etc.cd}$`
 }
 
 function GDWhereis(arg0) {
 	var places = [];
-	for (const p of Gniddos.etc.path) {
+	for (const p of MinGJ.etc.path) {
 		var pathDir = GDGetObj(p);
 		if(pathDir[arg0]) {
 			places.push(p + "/" + arg0);
@@ -70,13 +71,13 @@ function GDcreateLogContext (name, cb) {
 }
 
 function GDgetAbsolutePath(path){
-	if(!path[0] != "/") path = GDjoinPath(Gniddos.etc.cd,path)
+	if(!path[0] != "/") path = GDjoinPath(MinGJ.etc.cd,path)
 	return path;
 }
 
 function GDPathExist(path) {
 	path = path.split("/").filter(f=>f!="");
-	var progress = Gniddos;
+	var progress = MinGJ;
 	for (const f of path) {
 		if(progress[f]!==undefined) {
 			progress = progress[f];
@@ -87,7 +88,7 @@ function GDPathExist(path) {
 	return true;
 }
 
-function GDCall(cmd) {
+function Bash(cmd) {
 	console.log(GDgetPrompt(),cmd);
 	var args = cmd.split(" ");
 	var paths = GDWhereis(args[0]);
@@ -104,59 +105,15 @@ function GDCall(cmd) {
 Commands:
 /bin
 */
-Gniddos.bin.whereis = function(args) {
+MinGJ.bin.whereis = function(args) {
 	var places = GDWhereis(args[1]);
 	var list = places.map(p=>args[1] + ":"+p);
 	console.log(list.join("\n"));
 
 }
-Gniddos.bin.bash = function(args) {
+MinGJ.bin.bash = function(args) {
 	if(args.length>1) {
-		console.log("Critter Bash alpha 1.0");
+		console.log("JS Bash alpha 1.0");
 		return;
 	}
 }
-
-
-cardboard.on("worldCreated", (world) => {
-	commandPrefixes["$"] = function(msg) {
-		msg = msg.substr(1);
-		GDCall(msg)
-	}
-	console.log(commandPrefixes);
-});
-
-cardboard.on("login", (world) => {
-	Gniddos.home[world.player.nickname] = {};
-	console.log(`\n${location.hostname} login: ${world.player.nickname}`)
-})
-
-/*
-Device management
-/dev
-*/
-var onEvt = cardboard.on.bind(cardboard);
-([
-	"loadScriptClient","loadScriptLogin","loadScriptIndex",
-	"loadScriptUnityProgress","loadScriptUnityLoader","loadScriptShowGame",
-	"clientConnected",
-	"worldCreated","worldSocketCreated","woldStageCreated",
-	"worldStageCreated","worldManifestCreated",
-	"login","joinRoom"
-]).forEach(e=> {
-	onEvt(e,function(a,b){
-		function genDev(obj) {
-			var name = obj.constructor.name;
-			var i = 1;
-			while(true){
-				if(Gniddos.dev[name+i]==obj||!Gniddos.dev[name+i]) break;
-				i++;
-			}
-			name = name+i;
-			Gniddos.dev[name] = obj;
-			console.log("bash: found device /dev/"+name,obj);
-		}
-		if(a) genDev(a);
-		if(b) genDev(b);
-	})
-})

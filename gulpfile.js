@@ -4,7 +4,7 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	terser = require('gulp-terser')
 
-function build() {
+function buildJS() {
 	return gulp.src("src/**/*.js")
 		.pipe(plumber())
 		.pipe(sourcemaps.init())
@@ -15,5 +15,12 @@ function build() {
 			.pipe(sourcemaps.write('.', { includeContent: false, sourceRoot: '../src' }))
 			.pipe(gulp.dest('dist'))
 }
+function buildUS() {
+	return gulp.src(["misc/header.user.js","dist/min-gj.min.js"])
+		.pipe(concat('min-gj.user.js'))
+		.pipe(gulp.dest('dist'))
+}
 
-gulp.task('build', build);
+gulp.task('build-js', buildJS);
+gulp.task('build-us', buildUS);
+gulp.task('build', gulp.series('build-js','build-us'));

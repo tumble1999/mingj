@@ -11,6 +11,10 @@ MinGJ.bin.echo=function(n){n.shift(),console.log(n.join(" "))},MinGJ.bin.dir=fun
 function WEBAPIhttpGet(e){var t=new XMLHttpRequest;return t.open("GET",e,!1),t.send(null),t.responseText}
 //# sourceMappingURL=min-gj.min.js.map
 
-exportFunction(Bash,unsafeWindow,{
-	defineAs: "Bash"
-  });
+// UserScript Exports
+var globals = {Bash}
+for (const g in globals) {
+	exportFunction(globals[g],unsafeWindow,{
+		defineAs: g
+	  });
+}

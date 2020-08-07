@@ -1,4 +1,9 @@
 Gniddos.etc.path = ["/bin"];
+Gniddos.etc.cd="/";
+
+function GDgetPrompt() {
+return `${Gniddos.mnt.world.player.nickname}@${location.hostname}:${Gniddos.etc.cd}$`
+}
 
 function GDWhereis(arg0) {
 	var places = [];
@@ -12,11 +17,56 @@ function GDWhereis(arg0) {
 	return places;
 }
 
+function GDjoinPath(a=".",b=".") {
+	var start = a[0]=="/"||b[0]=="/"?"/":"";
+	var path = [];
+	var aP = a.split("/").filter(f=>f!="");
+	var bP = b.split("/").filter(f=>f!="");
+
+	function addFolder(f){
+		if(f=="..") path.pop();
+		if(f!=".." && f!=".")path.push(f)
+	}
+	if(b[0]!="/") for (const af of aP) addFolder(af);
+	for (const bf of bP) addFolder(bf);
+	return start + path.join("/");
+}
+
+function GDcreateLogContext (name, cb) {
+	var cl = console.log;
+	console.log = function (...t) {
+		cl(`${name}:`, ...t);
+	}
+	cb()
+	console.log = cl;
+}
+
+function GDgetAbsolutePath(path){
+	if(!path[0] != "/") path = GDjoinPath(Gniddos.etc.cd,path)
+	return path;
+}
+
+function GDPathExist(path) {
+	path = path.split("/").filter(f=>f!="");
+	var progress = Gniddos;
+	for (const f of path) {
+		if(progress[f]!==undefined) {
+			progress = progress[f];
+		} else {
+			return false;
+		}
+	}
+	return true;
+}
+
 function GDCall(cmd) {
+	console.log(GDgetPrompt(),cmd);
 	var args = cmd.split(" ");
 	var paths = GDWhereis(args[0]);
 	if(paths.length>0) {
-		GDGetObj(paths[0])(args);
+		GDcreateLogContext(args[0],function(){
+			GDGetObj(paths[0])(args);
+		});
 	} else {
 		console.log("bash: " + args[0] + ": command not found");
 	}
@@ -43,3 +93,8 @@ cardboard.on("worldCreated", (world) => {
 	}
 	console.log(commandPrefixes);
 });
+
+cardboard.on("login", (world) => {
+	Gniddos.home[world.player.nickname] = {};
+	console.log(`\n${location.hostname} login: ${Gniddos.mnt.world.player.nickname}`)
+})

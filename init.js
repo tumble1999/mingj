@@ -1,5 +1,6 @@
 var Gniddos = {
 	bin:{},
+	home:{},
 	mnt:{},
 	etc:{}
 };

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name Gniddos
+// @name Critter Bash
 // @description  Useless Kernel
 // @author       Tumble
 // @version      0.0.1.1

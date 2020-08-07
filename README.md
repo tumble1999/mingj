@@ -1,1 +1,1 @@
-# critter-bash
+# MinGJ

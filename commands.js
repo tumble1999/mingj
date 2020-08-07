@@ -44,3 +44,11 @@ Gniddos.bin.debug = function() {
 Gniddos.bin.exit = function() {
 	cheerio();
 }
+Gniddos.bin.wget = function(args) {
+	var url = args[1]
+
+	var currentFolder = GDGetObj(GDgetAbsolutePath("."));
+	var urlparts = url.split("/");
+	var name = urlparts[urlparts.length-1];
+	currentFolder[name] = WEBAPIhttpGet(url);
+}

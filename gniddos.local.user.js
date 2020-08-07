@@ -7,6 +7,7 @@
 // @require      https://github.com/SArpnt/joinFunction/raw/master/script.js
 // @require      https://github.com/SArpnt/EventHandler/raw/master/script.js
 // @require      https://github.com/SArpnt/cardboard/raw/master/script.user.js
+// @require      file:///E:/dev/boxcritters/mods/critter-bash/webapi.js
 // @require      file:///E:/dev/boxcritters/mods/critter-bash/message.js
 // @require      file:///E:/dev/boxcritters/mods/critter-bash/bash.js
 // @require      file:///E:/dev/boxcritters/mods/critter-bash/commands.js
@@ -22,5 +23,6 @@ console.log(EventHandler);
 console.log(cardboard)
 
 cardboard.on("worldCreated",(world)=>{
+	document.getElementById("message").maxLength = 1000
 	console.log(Gniddos);
 })

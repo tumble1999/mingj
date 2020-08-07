@@ -10,3 +10,7 @@ var MinGJ={bin:{},home:{},mnt:{},etc:{},dev:{}};function GDGetObj(n,o){n=n.split
 MinGJ.bin.echo=function(n){n.shift(),console.log(n.join(" "))},MinGJ.bin.dir=function(n){var t=n.length>1?n[n.length-1]:".";t=GDgetAbsolutePath(t),GDPathExist(t)||console.log(t,"does not exist");var i=GDGetObj(t);console.log(Object.keys(i).join(" "))},MinGJ.bin.cd=function(n){var t=n.length>1?n[n.length-1]:".";t=GDgetAbsolutePath(t),MinGJ.etc.cd=t},MinGJ.bin.help=function(n){MinGJ.etc.path.forEach(n=>MinGJ.bin.dir(["dir",n]))},MinGJ.bin.mount=function(n){if(n.length<3)console.log("Usage: mount DEVICE PLACE");else{var t=GDgetAbsolutePath(n[1]),i=GDgetAbsolutePath(n[2]),e=GDjoinPath(i,".."),o=i.split("/").pop();GDGetObj(e)[o]=GDGetObj(t)}},MinGJ.bin.debug=function(){console.info(MinGJ)},MinGJ.bin.exit=function(){cheerio()},MinGJ.bin.wget=function(n){var t=n[1],i=GDGetObj(GDgetAbsolutePath(".")),e=t.split("/");i[e[e.length-1]]=WEBAPIhttpGet(t)};
 function WEBAPIhttpGet(e){var t=new XMLHttpRequest;return t.open("GET",e,!1),t.send(null),t.responseText}
 //# sourceMappingURL=min-gj.min.js.map
+
+exportFunction(Bash,unsafeWindow,{
+	defineAs: "Bash"
+  });

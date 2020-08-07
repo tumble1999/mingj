@@ -8,7 +8,6 @@
 // @require      https://github.com/SArpnt/EventHandler/raw/master/script.js
 // @require      https://github.com/SArpnt/cardboard/raw/master/script.user.js
 // @require      https://github.com/boxcrittersmods/critter-bash/raw/master/message.js
-// @require      https://github.com/boxcrittersmods/critter-bash/raw/master/init.js
 // @require      https://github.com/boxcrittersmods/critter-bash/raw/master/bash.js
 // @require      https://github.com/boxcrittersmods/critter-bash/raw/master/commands.js
 // @match        https://boxcritters.com/play/
@@ -23,15 +22,5 @@ console.log(EventHandler);
 console.log(cardboard)
 
 cardboard.on("worldCreated",(world)=>{
-
-	Gniddos.mnt.world = world;
 	console.log(Gniddos);
 })
-
-
-
-/*
-processers
-filesystem
-commuinications
-*/

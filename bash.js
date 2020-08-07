@@ -1,8 +1,36 @@
+var Gniddos = {
+	bin:{},
+	home:{},
+	mnt:{},
+	etc:{},
+	dev:{}
+};
+
+/*
+Config
+/etc
+*/
 Gniddos.etc.path = ["/bin"];
 Gniddos.etc.cd="/";
 
+function GDGetObj(path,start) {
+	path = path.split("/").filter((p)=> p!="");
+	var parent = [];
+	var file = start||Gniddos;
+	for(var folder of path) {
+		if(folder == ".") continue;
+		if(folder == "..") {
+			folder = parent.pop();
+			continue;
+		}
+		parent.push(file);
+		file = file[folder];
+	}
+	return file
+}
+
 function GDgetPrompt() {
-return `${Gniddos.mnt.world.player.nickname}@${location.hostname}:${Gniddos.etc.cd}$`
+return `${world.player.nickname}@${location.hostname}:${Gniddos.etc.cd}$`
 }
 
 function GDWhereis(arg0) {
@@ -72,6 +100,10 @@ function GDCall(cmd) {
 	}
 }
 
+/*
+Commands:
+/bin
+*/
 Gniddos.bin.whereis = function(args) {
 	var places = GDWhereis(args[1]);
 	var list = places.map(p=>args[1] + ":"+p);
@@ -96,5 +128,35 @@ cardboard.on("worldCreated", (world) => {
 
 cardboard.on("login", (world) => {
 	Gniddos.home[world.player.nickname] = {};
-	console.log(`\n${location.hostname} login: ${Gniddos.mnt.world.player.nickname}`)
+	console.log(`\n${location.hostname} login: ${world.player.nickname}`)
+})
+
+/*
+Device management
+/dev
+*/
+var onEvt = cardboard.on.bind(cardboard);
+([
+	"loadScriptClient","loadScriptLogin","loadScriptIndex",
+	"loadScriptUnityProgress","loadScriptUnityLoader","loadScriptShowGame",
+	"clientConnected",
+	"worldCreated","worldSocketCreated","woldStageCreated",
+	"worldStageCreated","worldManifestCreated",
+	"login","joinRoom"
+]).forEach(e=> {
+	onEvt(e,function(a,b){
+		function genDev(obj) {
+			var name = obj.constructor.name;
+			var i = 1;
+			while(true){
+				if(Gniddos.dev[name+i]==obj||!Gniddos.dev[name+i]) break;
+				i++;
+			}
+			name = name+i;
+			Gniddos.dev[name] = obj;
+			console.log("bash: found device /dev/"+name,obj);
+		}
+		if(a) genDev(a);
+		if(b) genDev(b);
+	})
 })

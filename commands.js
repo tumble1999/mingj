@@ -22,3 +22,21 @@ Gniddos.bin.cd = function(args) {
 Gniddos.bin.help = function(args) {
 	Gniddos.etc.path.forEach(p=>Gniddos.bin.dir(["dir",p]));
 }
+
+// mount /dev/DEVICE PLACE
+Gniddos.bin.mount = function(args) {
+	if(args.length < 3) {
+		console.log("Usage: mount DEVICE PLACE");
+		return;
+	}
+	var a = GDgetAbsolutePath(args[1]);
+	var b = GDgetAbsolutePath(args[2]);
+
+	var place = GDjoinPath(b,"..");
+	var name = b.split("/").pop();
+	GDGetObj(place)[name] = GDGetObj(a);
+}
+
+Gniddos.bin.debug = function() {
+	console.info(Gniddos);
+}

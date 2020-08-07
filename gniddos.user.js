@@ -7,6 +7,10 @@
 // @require      https://github.com/SArpnt/joinFunction/raw/master/script.js
 // @require      https://github.com/SArpnt/EventHandler/raw/master/script.js
 // @require      https://github.com/SArpnt/cardboard/raw/master/script.user.js
+// @require      https://github.com/boxcrittersmods/critter-bash/raw/master/message.js
+// @require      https://github.com/boxcrittersmods/critter-bash/raw/master/init.js
+// @require      https://github.com/boxcrittersmods/critter-bash/raw/master/bash.js
+// @require      https://github.com/boxcrittersmods/critter-bash/raw/master/commands.js
 // @require      file:///E:/dev/boxcritters/mods/critter-bash/message.js
 // @require      file:///E:/dev/boxcritters/mods/critter-bash/init.js
 // @require      file:///E:/dev/boxcritters/mods/critter-bash/bash.js

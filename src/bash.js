@@ -12,6 +12,7 @@ Config
 */
 MinGJ.etc.path = ["/bin"];
 MinGJ.etc.cd="/";
+MinGJ.etc.username = "js"
 
 function GDGetObj(path,start) {
 	path = path.split("/").filter((p)=> p!="");

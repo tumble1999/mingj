@@ -16,8 +16,8 @@ function buildJS() {
 			.pipe(gulp.dest('dist'))
 }
 function buildUS() {
-	return gulp.src(["misc/header.user.js","dist/min-gj.min.js","misc/footer.user.js"])
-		.pipe(concat('min-gj.user.js'))
+	return gulp.src(["misc/header.user.js","dist/mingj.min.js","misc/footer.user.js"])
+		.pipe(concat('mingj.user.js'))
 		.pipe(gulp.dest('dist'))
 }
 

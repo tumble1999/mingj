@@ -50,7 +50,7 @@ fs.bin.wget = function (argc, argv, sys) {
 }
 
 fs.bin.uname = function (argc, argv, sys) {
-	sys.write(MGJuname(argc, argv, sys));
+	sys.print(MGJuname(argc, argv, sys));
 }
 
 fs.bin.su = function (argc, argv, sys) {

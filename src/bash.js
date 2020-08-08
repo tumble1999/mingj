@@ -46,13 +46,13 @@ function MGJuname(argc, argv, sys) {
 	var output = [];
 
 	function addArg(a, b, value="") {
-		var all = args.includes("-a") || args.includes("--all");
-		if(args.includes(`--${a}`) || args.includes(`-${b}`) || (all && value !== "")) {
+		var all = argv.includes("-a") || argv.includes("--all");
+		if (argv.includes(`--${a}`) || argv.includes(`-${b}`) || (all && value !== "")) {
 			output.push(value || "unknown");
 		}
 	}
 
-	addArg("kernel-name", "v", sys.env.hostname);
+	addArg("kernel-name", "v", "MinGJ");
 	addArg("nodename", "n", location.hostname);
 	addArg("kernel-release", "r");
 	addArg("kernel-version", "v");
@@ -98,7 +98,7 @@ fs.bin.whereis = function (argc, argv, sys) {
 }
 
 fs.bin.bash = function (argc, argv, sys) {
-	if (args.length > 1) {
+	if (argv.length > 1) {
 		sys.print("JS Bash alpha 1.0");
 		return;
 	}

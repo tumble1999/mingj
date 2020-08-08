@@ -29,7 +29,7 @@ fs.bin.mount = function (argc, argv, sys) {
 		sys.print("Usage: mount DEVICE PLACE");
 		return;
 	}
-	mount(argv[1], argv[2]);
+	sys.mount(argv[1], argv[2]);
 }
 
 fs.bin.debug = function (argc, argv, sys) {

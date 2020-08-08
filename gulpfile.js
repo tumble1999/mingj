@@ -11,13 +11,13 @@ function buildJS() {
 		.pipe(terser({
 			warnings:"verbose"
 		}))
-		.pipe(concat('min-gj.min.js'))
+		.pipe(concat('mingj.min.js'))
 			.pipe(sourcemaps.write('.', { includeContent: false, sourceRoot: '../src' }))
 			.pipe(gulp.dest('dist'))
 }
 function buildUS() {
-	return gulp.src(["misc/header.user.js","dist/min-gj.min.js","misc/footer.user.js"])
-		.pipe(concat('min-gj.user.js'))
+	return gulp.src(["misc/header.user.js","dist/mingj.min.js","misc/footer.user.js"])
+		.pipe(concat('mingj.user.js'))
 		.pipe(gulp.dest('dist'))
 }
 

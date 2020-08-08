@@ -60,6 +60,9 @@ MinGJ.bin.uname = function(args) {
 
 
 MinGJ.bin.su = function(args) {
-	if(args.length < 2) MinGJ.etc.username = "root";
+	if(args.length < 2) {
+		MinGJ.etc.username = "root";
+		return;
+	}
 	MinGJ.etc.username = args[1]	
 }

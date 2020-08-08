@@ -14,7 +14,7 @@ MinGJ.etc.path = ["/bin"];
 MinGJ.etc.cd="/";
 MinGJ.etc.username = "js"
 
-function GDGetObj(path,start) {
+function MGJGetObj(path,start) {
 	path = path.split("/").filter((p)=> p!="");
 	var parent = [];
 	var file = start||MinGJ;
@@ -30,14 +30,14 @@ function GDGetObj(path,start) {
 	return file
 }
 
-function GDgetPrompt() {
+function MGJgetPrompt() {
 return `${MinGJ.etc.username}@${location.hostname}:${MinGJ.etc.cd}$`
 }
 
-function GDWhereis(arg0) {
+function MGJWhereis(arg0) {
 	var places = [];
 	for (const p of MinGJ.etc.path) {
-		var pathDir = GDGetObj(p);
+		var pathDir = MGJGetObj(p);
 		if(pathDir[arg0]) {
 			places.push(p + "/" + arg0);
 		}
@@ -46,7 +46,7 @@ function GDWhereis(arg0) {
 	return places;
 }
 
-function GDjoinPath(a=".",b=".") {
+function MGJjoinPath(a=".",b=".") {
 	var start = a[0]=="/"||b[0]=="/"?"/":"";
 	var path = [];
 	var aP = a.split("/").filter(f=>f!="");
@@ -61,7 +61,7 @@ function GDjoinPath(a=".",b=".") {
 	return start + path.join("/");
 }
 
-function GDcreateLogContext (name, cb) {
+function MGJcreateLogContext (name, cb) {
 	var cl = console.log;
 	console.log = function (...t) {
 		cl(`${name}:`, ...t);
@@ -70,12 +70,12 @@ function GDcreateLogContext (name, cb) {
 	console.log = cl;
 }
 
-function GDgetAbsolutePath(path){
-	if(!path[0] != "/") path = GDjoinPath(MinGJ.etc.cd,path)
+function MGJgetAbsolutePath(path){
+	if(!path[0] != "/") path = MGJjoinPath(MinGJ.etc.cd,path)
 	return path;
 }
 
-function GDPathExist(path) {
+function MGJPathExist(path) {
 	path = path.split("/").filter(f=>f!="");
 	var progress = MinGJ;
 	for (const f of path) {
@@ -88,13 +88,34 @@ function GDPathExist(path) {
 	return true;
 }
 
+function MGJuname(args) {
+	var output = [];
+
+	function addArg(a,b,value="") {
+		var all = args.includes("-a")||args.includes("--all");
+		if(args.includes("--"+a)||args.includes("-"+b)||(all&&value!=="")) {
+			output.push(value||"unknown");
+		}
+	}
+
+	addArg("kernel-name","v","MinGJ");
+	addArg("nodename","n",location.hostname);
+	addArg("kernel-release","r");
+	addArg("kernel-version","v");
+	addArg("machine","m",platform.os);
+	addArg("processor","p");
+	addArg("hardware-platform","i");
+	addArg("operating-system","o",platform.name);
+	return output.join(" ");
+}
+
 function Bash(cmd) {
-	console.log(GDgetPrompt(),cmd);
+	console.log(MGJgetPrompt(),cmd);
 	var args = cmd.split(" ");
-	var paths = GDWhereis(args[0]);
+	var paths = MGJWhereis(args[0]);
 	if(paths.length>0) {
-		GDcreateLogContext(args[0],function(){
-			GDGetObj(paths[0])(args);
+		MGJcreateLogContext(args[0],function(){
+			MGJGetObj(paths[0])(args);
 		});
 	} else {
 		console.log("bash: " + args[0] + ": command not found");
@@ -113,7 +134,7 @@ Commands:
 /bin
 */
 MinGJ.bin.whereis = function(args) {
-	var places = GDWhereis(args[1]);
+	var places = MGJWhereis(args[1]);
 	var list = places.map(p=>args[1] + ":"+p);
 	console.log(list.join("\n"));
 

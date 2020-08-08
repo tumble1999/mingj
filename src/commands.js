@@ -6,17 +6,17 @@ MinGJ.bin.echo = function(args) {
 
 MinGJ.bin.dir = function(args) {
 	var path = args.length>1?args[args.length-1]:"."
-	path = GDgetAbsolutePath(path);
-	if(!GDPathExist(path)) {
+	path = MGJgetAbsolutePath(path);
+	if(!MGJPathExist(path)) {
 		console.log(path, "does not exist")
 	}
-	var things = GDGetObj(path);
+	var things = MGJGetObj(path);
 	console.log(Object.keys(things).join(" "))
 }
 
 MinGJ.bin.cd = function(args) {
 	var path = args.length>1?args[args.length-1]:"."
-	path = GDgetAbsolutePath(path)
+	path = MGJgetAbsolutePath(path)
 	MinGJ.etc.cd = path;
 }
 MinGJ.bin.help = function(args) {
@@ -29,12 +29,12 @@ MinGJ.bin.mount = function(args) {
 		console.log("Usage: mount DEVICE PLACE");
 		return;
 	}
-	var a = GDgetAbsolutePath(args[1]);
-	var b = GDgetAbsolutePath(args[2]);
+	var a = MGJgetAbsolutePath(args[1]);
+	var b = MGJgetAbsolutePath(args[2]);
 
-	var place = GDjoinPath(b,"..");
+	var place = MGJjoinPath(b,"..");
 	var name = b.split("/").pop();
-	GDGetObj(place)[name] = GDGetObj(a);
+	MGJGetObj(place)[name] = MGJGetObj(a);
 }
 
 MinGJ.bin.debug = function() {
@@ -42,13 +42,17 @@ MinGJ.bin.debug = function() {
 }
 
 MinGJ.bin.exit = function() {
-	cheerio();
+	console.log("This command has been disabled.");
 }
 MinGJ.bin.wget = function(args) {
 	var url = args[1]
 
-	var currentFolder = GDGetObj(GDgetAbsolutePath("."));
+	var currentFolder = MGJGetObj(MGJgetAbsolutePath("."));
 	var urlparts = url.split("/");
 	var name = urlparts[urlparts.length-1];
 	currentFolder[name] = WEBAPIhttpGet(url);
+}
+
+MinGJ.bin.uname = function(args) {
+	console.log(MGJuname(args));
 }

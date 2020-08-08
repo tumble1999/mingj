@@ -56,3 +56,10 @@ MinGJ.bin.wget = function(args) {
 MinGJ.bin.uname = function(args) {
 	console.log(MGJuname(args));
 }
+
+
+
+MinGJ.bin.su = function(args) {
+	if(args.length < 2) MinGJ.etc.username = "root";
+	MinGJ.etc.username = args[1]	
+}

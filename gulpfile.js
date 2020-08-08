@@ -11,7 +11,7 @@ function buildJS() {
 		.pipe(terser({
 			warnings:"verbose"
 		}))
-		.pipe(concat('min-gj.min.js'))
+		.pipe(concat('mingj.min.js'))
 			.pipe(sourcemaps.write('.', { includeContent: false, sourceRoot: '../src' }))
 			.pipe(gulp.dest('dist'))
 }

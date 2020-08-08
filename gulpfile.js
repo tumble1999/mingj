@@ -5,19 +5,19 @@ var gulp = require('gulp'),
 	terser = require('gulp-terser')
 
 function buildJS() {
-	return gulp.src("src/**/*.js")
+	return gulp.src(["src/kernel.js", "src/**/*.js"])
 		.pipe(plumber())
 		.pipe(sourcemaps.init())
 		.pipe(terser({
 			warnings:"verbose"
 		}))
-		.pipe(concat('mingj.min.js'))
+		.pipe(concat('min-gj.min.js'))
 			.pipe(sourcemaps.write('.', { includeContent: false, sourceRoot: '../src' }))
 			.pipe(gulp.dest('dist'))
 }
 function buildUS() {
-	return gulp.src(["misc/header.user.js","dist/mingj.min.js","misc/footer.user.js"])
-		.pipe(concat('mingj.user.js'))
+	return gulp.src(["misc/header.user.js","dist/min-gj.min.js","misc/footer.user.js"])
+		.pipe(concat('min-gj.user.js'))
 		.pipe(gulp.dest('dist'))
 }
 

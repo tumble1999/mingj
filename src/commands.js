@@ -1,81 +1,103 @@
-MinGJ.bin.echo = function(args) {
-	args.shift();
-	console.log(args.join(" "))
+fs.bin.echo = function (argc, argv, sys) {
+	argv.shift();
+	sys.print(argv.join(" "));
 }
 
-
-MinGJ.bin.dir = function(args) {
-	var path = args.length>1?args[args.length-1]:"."
-	path = MGJgetAbsolutePath(path);
-	if(!MGJPathExist(path)) {
-		console.log(path, "does not exist")
+fs.bin.dir = function (argc, argv, sys) {
+	var path = argc > 1 ? argv[argc - 1] : ".";
+	path = sys.getAbsolutePath(path);
+	if (!sys.pathExist(path)) {
+		sys.print(`${path} does not exist`);
 	}
-	var things = MGJGetObj(path);
-	console.log(Object.keys(things).join(" "))
+	var things = sys.getObj(path);
+	sys.print(Object.keys(things).join(" "));
 }
 
-MinGJ.bin.cd = function(args) {
-	var path = args.length>1?args[args.length-1]:"."
-	path = MGJgetAbsolutePath(path)
-	MinGJ.etc.cd = path;
+fs.bin.cd = function (argc, argv, sys) {
+	var path = argc > 1 ? argv[argc - 1] : ".";
+	path = sys.getAbsolutePath(path);
+	sys.env.cd = path;
 }
-MinGJ.bin.help = function(args) {
-	MinGJ.etc.path.forEach(p=>MinGJ.bin.dir(["dir",p]));
+
+fs.bin.help = function (argc, argv, sys) {
+	MinGJ.env.path.forEach(p => sys.exec("/bin/dir", [p]));
 }
 
 // mount /dev/DEVICE PLACE
-MinGJ.bin.mount = function(args) {
-	if(args.length < 3) {
-		console.log("Usage: mount DEVICE PLACE");
+fs.bin.mount = function (argc, argv, sys) {
+	if (argc < 3) {
+		sys.print("Usage: mount DEVICE PLACE");
 		return;
 	}
-	var a = MGJgetAbsolutePath(args[1]);
-	var b = MGJgetAbsolutePath(args[2]);
-
-	var place = MGJjoinPath(b,"..");
-	var name = b.split("/").pop();
-	MGJGetObj(place)[name] = MGJGetObj(a);
+	mount(argv[1], argv[2]);
 }
 
-MinGJ.bin.debug = function() {
-	console.info(MinGJ);
+fs.bin.debug = function (argc, argv, sys) {
+	sys.print(sys);
 }
 
-MinGJ.bin.exit = function() {
-	console.log("This command has been disabled.");
+fs.bin.exit = function (argc, argv, sys) {
+	sys.print("This command has been disabled.");
 }
-MinGJ.bin.wget = function(args) {
-	var url = args[1]
 
-	var currentFolder = MGJGetObj(MGJgetAbsolutePath("."));
+fs.bin.wget = function (argc, argv, sys) {
+	var url = argv[1];
+
+	var currentFolder = sys.getObj(sys.getAbsolutePath("."));
 	var urlparts = url.split("/");
-	var name = urlparts[urlparts.length-1];
+	var name = urlparts[urlparts.length - 1];
 	currentFolder[name] = WEBAPIhttpGet(url);
 }
 
-MinGJ.bin.uname = function(args) {
-	console.log(MGJuname(args));
+fs.bin.uname = function (argc, argv, sys) {
+	sys.write(MGJuname(argc, argv, sys));
 }
 
-MinGJ.bin.su = function(args) {
-
-	if(args.length < 2) {
-		MinGJ.etc.username = "root";
+fs.bin.su = function (argc, argv, sys) {
+	if (argc < 2) {
+		sys.env.username = "root";
 	} else {
-		var name = args[args.length-1];
-		if(name=="-s") {
-			name=root;
+		var name = argv[argc - 1];
+		if (name == "-s") {
+			name = "root";
 		}
-		MinGJ.etc.username = name;
+		sys.env.username = name;
 	}
 
-	if(args.includes("-s")) {
-		if(MinGJ.etc.username=="root") {
-			MinGJ.root = MinGJ.root||new Object();
-			MinGJ.etc.cd  = "/root";
+	if (argv.includes("-s")) {
+		if (sys.env.username == "root") {
+			fs.root = fs.root || new Object();
+			fs.env.cd  = "/root";
 		} else {
-			MinGJ.home[MinGJ.etc.username] = MinGJ.home[MinGJ.etc.username]||new Object();
-			MinGJ.etc.cd = "/home/" + MinGJ.etc.username;
+			fs.home[sys.env.username] = fs.home[sys.env.username] || new Object();
+			sys.env.cd = `/home/${sys.env.username}`;
 		}
 	}
+}
+
+fs.bin.cat = function (argc, argv, sys) {
+	var final = new String();
+	var tmp = new String();
+	var err = 0;
+
+	argv.shift();
+	argv.forEach(function (file) {
+		if (sys.pathExist(sys.getAbsolutePath(file)))
+		{
+			tmp = sys.getObj(sys.getAbsolutePath(file));
+			if (typeof(tmp) == "string" || tmp instanceof String)
+			{
+				final += tmp;
+			} else
+			{
+				err = -1;
+				return sys.write("/dev/stderr", `Error: ${sys.getAbsolutePath(file)} is not a normal file.`);
+			}
+		} else
+		{
+			err = -1;
+			return sys.write("/dev/stderr", `Error: ${sys.getAbsolutePath(file)} does not exist.`);
+		}
+	});
+	return (err != 0 ? err : sys.print(final));
 }

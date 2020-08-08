@@ -57,12 +57,25 @@ MinGJ.bin.uname = function(args) {
 	console.log(MGJuname(args));
 }
 
-
-
 MinGJ.bin.su = function(args) {
+
 	if(args.length < 2) {
 		MinGJ.etc.username = "root";
-		return;
+	} else {
+		var name = args[args.length-1];
+		if(name=="-s") {
+			name=root;
+		}
+		MinGJ.etc.username = name;
 	}
-	MinGJ.etc.username = args[1]	
+
+	if(args.includes("-s")) {
+		if(MinGJ.etc.username=="root") {
+			MinGJ.root = MinGJ.root||new Object();
+			MinGJ.etc.cd  = "/root";
+		} else {
+			MinGJ.home[MinGJ.etc.username] = MinGJ.home[MinGJ.etc.username]||new Object();
+			MinGJ.etc.cd = "/home/" + MinGJ.etc.username;
+		}
+	}
 }

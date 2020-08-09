@@ -20,9 +20,10 @@ title: How to get MinGJ
 	<li><a href="{{site.url}}/dist/mingj.user.js">Install UserScript</a></li>
 </ul>
 <br>
-## Other Versions
 
-<table>
+## All Versions
+
+<table id="downloads">
 	<thead>
 		<td>Version</td>
 		<td>UserScript</td>
@@ -36,6 +37,19 @@ title: How to get MinGJ
 		<td><a href="{{site.url}}/dist/mingj.min.js.maps" download="mingj.min.js.maps">mingj.min.js.maps</a></td>
 	</tr>
 </table>
+
+## All Builds
+
+<table id="commits">
+	<thead>
+		<td>Version</td>
+		<td>UserScript</td>
+		<td>Download</td>
+		<td>SourceMaps</td>
+	</thead>
+</table>
+
+<script src="/web/downloads.js"></script>
 
 
 

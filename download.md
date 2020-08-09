@@ -1,0 +1,41 @@
+---
+layout: page
+title: How to get MinGW
+---
+
+## Install
+<a href="{{site.url}}/dist/mingj.user.js" style="font-size:2em">Install to your Browser</a>
+
+<br><br>
+
+## Add to your site with the snippet below
+```html
+<script src="{{site.url}}/dist/mingj.min.js"></script>
+```
+<br><br>
+## More Links
+<ul>
+	<li><a href="{{site.url}}/dist/mingj.min.js" download="mingw.min.js">Download</a></li>
+	<li><a href="{{site.url}}/dist/mingj.min.js.map" download="mingw.min.js.map">Download Source Maps</a></li>
+	<li><a href="{{site.url}}/dist/mingj.user.js">Install UserScript</a></li>
+</ul>
+<br>
+## Other Versions
+
+<table>
+	<thead>
+		<td>Version</td>
+		<td>UserScript</td>
+		<td>Download</td>
+		<td>SourceMaps</td>
+	</thead>
+	<tr>
+		<td>MinGW 0.1</td>
+		<td><a href="{{site.url}}/dist/mingw.user.js" download="mingw.user.js">mingw.user.js</a></td>
+		<td><a href="{{site.url}}/dist/mingj.min.js" download="mingw.min.js">mingj.min.js</a></td>
+		<td><a href="{{site.url}}/dist/mingj.min.js.maps" download="mingw.min.js.maps">mingj.min.js.maps</a></td>
+	</tr>
+</table>
+
+
+

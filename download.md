@@ -1,6 +1,6 @@
 ---
 layout: page
-title: How to get mingj
+title: How to get MinGJ
 ---
 
 ## Install
@@ -30,7 +30,7 @@ title: How to get mingj
 		<td>SourceMaps</td>
 	</thead>
 	<tr>
-		<td>mingj 0.1</td>
+		<td>MinGJ 0.1</td>
 		<td><a href="{{site.url}}/dist/mingj.user.js" download="mingj.user.js">mingj.user.js</a></td>
 		<td><a href="{{site.url}}/dist/mingj.min.js" download="mingj.min.js">mingj.min.js</a></td>
 		<td><a href="{{site.url}}/dist/mingj.min.js.maps" download="mingj.min.js.maps">mingj.min.js.maps</a></td>

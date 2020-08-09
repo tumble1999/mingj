@@ -1,6 +1,8 @@
 title: MinGJ
 description: Minimalistic GNU for JavaScript
 
+url: localhost:4000
+
 markdown: kramdown
 theme: minima
 kramdown:

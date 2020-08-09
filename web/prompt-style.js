@@ -1,4 +1,4 @@
-Bash("su -s jekyll")
+Bash("su mingj")
 
 var prompts = document.getElementsByClassName("prompt");
 for (const prompt of prompts) {

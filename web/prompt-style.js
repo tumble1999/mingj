@@ -7,4 +7,8 @@ for (const prompt of prompts) {
 	} else {
 	prompt.textContent = "$ " + text;
 	}
+
+	if(prompt.classList.contains("404")) {
+		prompt.textContent = prompt.textContent.replace("PATH",location.pathname);
+	}
 }

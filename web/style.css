@@ -65,3 +65,25 @@ a,a:visited,a:focus {
 a:hover {
 	color:#008000;
 }
+
+
+#stdin,#stdout {
+
+	font-size: 12px;
+}
+
+#stdin {
+	/* margin-left: 1em; */
+	width: auto;
+	min-width: 1em;
+	height: auto;
+	min-height: 1em;
+	
+	border: none;
+	background-color: black;
+	color:white;
+}
+#stdout {
+	
+	/* margin-left: 1em; */
+}

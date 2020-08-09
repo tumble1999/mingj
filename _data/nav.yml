@@ -1,2 +1,6 @@
+- name: Home
+  href: /
 - name: Demo
   href: /demo
+- name: Yay
+  href: /yay

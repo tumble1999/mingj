@@ -17,6 +17,8 @@ var createRow = (name,parent=downloadlist) => {
 			link.download = name;
 			link.textContent = name;
 			cell.appendChild(link);
+		} else {
+			cell.classList.add("color-grey");
 		}
 		row.appendChild(cell)
 	};

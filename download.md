@@ -46,6 +46,7 @@ title: How to get MinGJ
 		<td>Download</td>
 		<td>SourceMaps</td>
 		<td>UserScript</td>
+		<td>SourceCode</td>
 	</thead>
 </table>
 

@@ -12,3 +12,10 @@ for (const prompt of prompts) {
 		prompt.textContent = prompt.textContent.replace("PATH",location.pathname);
 	}
 }
+
+var p404 = document.getElementsByClassName("404");
+for (const p of p404) {
+	if(p.classList.contains("404")) {
+		p.textContent = p.textContent.replace("PATH",location.pathname);
+	}
+}

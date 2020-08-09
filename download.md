@@ -26,15 +26,15 @@ title: How to get MinGJ
 <table id="downloads">
 	<thead>
 		<td>Version</td>
-		<td>UserScript</td>
 		<td>Download</td>
 		<td>SourceMaps</td>
+		<td>UserScript</td>
 	</thead>
 	<tr>
 		<td>MinGJ 0.1</td>
-		<td><a href="{{site.url}}/dist/mingj.user.js" download="mingj.user.js">mingj.user.js</a></td>
 		<td><a href="{{site.url}}/dist/mingj.min.js" download="mingj.min.js">mingj.min.js</a></td>
 		<td><a href="{{site.url}}/dist/mingj.min.js.maps" download="mingj.min.js.maps">mingj.min.js.maps</a></td>
+		<td><a href="{{site.url}}/dist/mingj.user.js" download="mingj.user.js">mingj.user.js</a></td>
 	</tr>
 </table>
 
@@ -43,9 +43,9 @@ title: How to get MinGJ
 <table id="commits">
 	<thead>
 		<td>Version</td>
-		<td>UserScript</td>
 		<td>Download</td>
 		<td>SourceMaps</td>
+		<td>UserScript</td>
 	</thead>
 </table>
 

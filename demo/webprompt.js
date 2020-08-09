@@ -28,14 +28,15 @@ function stdout(text,level=0) {
 function stdin(promptText) {
 	if(document.getElementById("prompt")) return new Promise((resolve,reject)=>reject);
 	var stdinRow = document.createElement("span");
-	stdinRow.id = "stdin"
+	stdinRow.id = "prompt"
+	stdinRow.classList.add("prompt-")
 
 	var prompt = document.createElement("span");
 	prompt.textContent = promptText;
 	stdinRow.appendChild(prompt);
 
 	var stdin = document.createElement("span");
-	stdin.id = "prompt"
+	stdin.id = "stdin"
 	stdin.role = "textbox"
 	stdin.contentEditable = true;
 	stdinRow.appendChild(stdin);

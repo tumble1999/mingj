@@ -3,7 +3,7 @@ layout: demo
 ---
 <p class="prompt">mount /dev/dem1 /mnt/demo</p>
 <p class="prompt">chroot /mnt/demo</p>
-<div id="stdout">
+<div id="stdout" class="prompt-">
 	<p>Welcome to MinGJ 0.1</p>
 	<p>A GNU Emulator for JS created by <a href="https://github.com/tumble1999" >tumble1999</a> and <a href="'https://github.com/alvarito050506">alvarito050506</a></p>
 	<br>
@@ -12,3 +12,9 @@ layout: demo
 	<br>
 	<p>Type '<span class="color-green" onclick="Bash('help')" style="cursor:pointer;">help</span>' for a list of commands.</p>
 </div>
+
+
+
+<script src="{{site.url}}/dist/mingj.min.js"></script>
+<script src="{{site.url}}/demo/webprompt.js"></script>
+<script src="{{site.url}}/demo/index.js"></script>

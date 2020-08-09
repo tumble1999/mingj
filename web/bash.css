@@ -5,11 +5,11 @@ html,body {
 	font-size: 1.1em;
 }
 
-p.prompt,p.prompt- {
+p.prompt,.prompt- {
 	padding: 0;
 	margin: 0;
 	width:100%;
-	font-size: 12px;
+	font-size: 1em;
 	text-align: left;
 }
 

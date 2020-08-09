@@ -49,7 +49,7 @@ title: How to get MinGJ
 	</thead>
 </table>
 
-<script src="/web/downloads.js"></script>
+<script src="{{site.url}}/web/downloads.js"></script>
 
 
 

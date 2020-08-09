@@ -1,0 +1,17 @@
+<p class="prompt">uname -s</p>
+<header>
+	<div class="site-title">
+		<h1 class="color-yellow">MinGJ</h1>
+		<p class="site-subtitle color-light-grey">Minimalistic GNU for JavaScript</p>
+	</div>
+	<p class="prompt">dir /var/www/</p>
+	<nav>
+		<ul class="nav">
+			{% for item in site.data.nav %}
+			<li><a href="{{item.href}}">[{{item.name}}]</a></li>
+			{% endfor %}
+			<li><a href="/about">[About]</a></li>
+			<li><a href="/about">[About]</a></li>
+		</ul>
+	</nav>
+</header>

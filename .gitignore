@@ -75,3 +75,10 @@ jspm_packages/
 
 # TernJS port file
 .tern-port
+
+
+# jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata

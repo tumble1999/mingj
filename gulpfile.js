@@ -5,7 +5,7 @@ var gulp = require('gulp'),
 	terser = require('gulp-terser')
 
 function buildJS() {
-	return gulp.src(["src/kernel.js", "src/**/*.js"])
+	return gulp.src(["src/boot/**/*.js", "src/lib/*.js","src/bin/**/*.js"])
 		.pipe(plumber())
 		.pipe(sourcemaps.init())
 		.pipe(terser({

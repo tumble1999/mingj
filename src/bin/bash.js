@@ -1,15 +1,15 @@
 const fs = {
-	"bin": {
+	"bin": new Folder({
 		"init": function (argc, argv, sys) {
 			sys.write("/dev/stdout", "OK.");
 		},
-	},
-	"home": new Object(),
-	"mnt": new Object(),
-	"etc": {
+	}),
+	"home": new Folder(),
+	"mnt": new Folder(),
+	"etc": new Folder({
 		"hostname": "MinGJ"
-	},
-	"dev": new Object()
+	}),
+	"dev": new Folder()
 };
 
 var MinGJ = new kernel(fs);

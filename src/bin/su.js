@@ -11,10 +11,10 @@ fs.bin.su = function (argc, argv, sys) {
 
 	if (argv.includes("-s")) {
 		if (sys.env.username == "root") {
-			fs.root = fs.root || new Folder;
-			fs.env.cd  = "/root";
+			sys.mkdir("/root");
+			sys.env.cd  = "/root";
 		} else {
-			fs.home[sys.env.username] = fs.home[sys.env.username] || new Folder;
+			sys.mkdir(`/home/${sys.env.username}`)
 			sys.env.cd = `/home/${sys.env.username}`;
 		}
 	}

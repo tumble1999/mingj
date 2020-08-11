@@ -71,12 +71,21 @@ class kernel {
 		this.exec("/bin/init");
 	}
 
-	mount(device, path) {
+	mount(devPath, path) {
 		var new_path = this.getAbsolutePath(path);
 		var basename = this.basename(new_path);
 		new_path = this.joinPath(new_path, "..");
+		var dev = this.getObj(dev);
 
-		this.getObj(new_path)[basename] = device;
+		if(dev instanceof blockDevice){
+			this.print("mount: " + devPath + ": Block device mounting coming Soon");
+			return;
+		}
+		if(typeof(dev) != "object") {
+			this.print("mount: " + devPath + ": is not a mountable node.")
+		}
+
+		this.getObj(new_path)[basename] = dev;
 		return;
 	}
 

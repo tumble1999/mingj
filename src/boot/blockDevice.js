@@ -1,12 +1,17 @@
 class blockDevice extends device {
 	constructor(data) {
-		super();
+		super(
+			function read(pos = 0, type = "Uint8",) {
+				if (!blockDevice.types.includes(type)) return undefined;
+				return this.view["get" + type](pos);
+			},
+			function write(block, pos = 0, type = "Uint8") {
+				if (!blockDevice.types.includes(type)) return;
+				this.view["set" + type](pos, block);
+			}
+			);
 		this.data = new ArrayBuffer(data)
 		this.view = new DataView(this.data);
-	}
-	read(pos = 0, type = "Uint8",) {
-		if (!blockDevice.types.includes(type)) return undefined;
-		return this.view["get" + type](pos);
 	}
 	getBlockCount(type = "Uint8") {
 		if (!blockDevice.types.includes(type)) return NaN;
@@ -20,10 +25,6 @@ class blockDevice extends device {
 			array.push(this.read(i));
 		}
 		return new globalThis[type + "Array"](array);
-	}
-	write(block, pos = 0, type = "Uint8") {
-		if (!blockDevice.types.includes(type)) return;
-		this.view["set" + type](pos, block);
 	}
 
 	writeArray(blockArray, pos = 0, type = blockArray.constructor.name.replace("Array", "")) {

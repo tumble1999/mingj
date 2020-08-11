@@ -214,4 +214,26 @@ class kernel {
 		});
 		return this.write("/dev/stdout", final);
 	}
+
+	gendevname(obj) {
+		var name = obj.constructor.name;
+		var i = 1;
+		while(true){
+			if(this.fs.dev[name+i]==obj||!this.fs.dev[name+i]) break;
+			i++;
+		}
+		name = name+i;
+	}
+
+	mknod(name,type,major,minor) {
+		if(!['b','c'].includes(type)) this.print("mknod: "+type +": invalid device type");
+		//GetPlace
+		var top = this.getObj(this.joinPath(name, ".."));
+		var basename = this.basename(name);
+
+		var dev;
+		if(type=='b') dev = new blockDevice();
+		if(type=='c') dev = null;
+		top[basename] = dev;
+	}
 }

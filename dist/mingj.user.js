@@ -27,6 +27,7 @@ fs.bin.cd=function(n,t,c){var e=n>1?t[n-1]:".";e=c.getAbsolutePath(e),c.env.cd=e
 fs.bin.debug=function(n,o,b){console.log(b)};
 fs.bin.dir=function(t,i,e){var n=t>1?i[t-1]:".";n=e.getAbsolutePath(n),e.pathExist(n)||e.print(n+" does not exist");var s=e.getObj(n);e.print(Object.keys(s).join(" "))};
 fs.bin.echo=function(i,n,f){n.shift(),f.print(n.join(" "))};
+fs.bin.env=function(n,i,e){for(const n in e.env)e.print(n+"="+e.env[n])};
 fs.bin.help=function(n,i,e){MinGJ.env.path.forEach(n=>e.exec("/bin/dir",[n]))};
 fs.bin.mount=function(n,t,o){n<3?o.print("Usage: mount DEVICE PLACE"):o.mount(t[1],t[2])};
 fs.bin.su=function(e,n,s){if(e<2)s.env.username="root";else{var o=n[e-1];"-s"==o&&(o="root"),s.env.username=o}n.includes("-s")&&("root"==s.env.username?(fs.root=fs.root||new Object,fs.env.cd="/root"):(fs.home[s.env.username]=fs.home[s.env.username]||new Object,s.env.cd="/home/"+s.env.username))};

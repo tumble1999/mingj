@@ -4,12 +4,12 @@ const fs = {
 			sys.write("/dev/stdout", "OK.");
 		},
 	}),
-	"home": new Folder(),
-	"mnt": new Folder(),
+	"home": new Folder,
+	"mnt": new Folder,
 	"etc": new Folder({
 		"hostname": "MinGJ"
 	}),
-	"dev": new Folder()
+	"dev": new Folder
 };
 
 var MinGJ = new kernel(fs);

@@ -187,6 +187,10 @@ class kernel {
 		return code;
 	}
 
+	parentPath(path) {
+		return this.joinPath(path, "..");
+	}
+
 	basename(path) {
 		return path.split("/").pop();
 	}
@@ -244,5 +248,12 @@ class kernel {
 		if(type=='b') dev = new blockDevice();
 		if(type=='c') dev = null;
 		top[basename] = dev;
+	}
+
+	mkdir(path,mode) {
+		if(this.pathExist(path)) return;
+		var parent = this.parentPath(path);
+		if(!this.pathExist(parent)) this.mkdir(parent);
+		this.write(path,new Folder);
 	}
 }

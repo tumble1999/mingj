@@ -33,15 +33,6 @@ function MGJWhereis(name) {
 	return places;
 }
 
-function MGJcreateLogContext(name, cb) {
-	var old = fs.dev.stdout.write;
-	fs.dev.stdout.write = function (...t) {
-		old(`${name}:`, ...t);
-	};
-	cb();
-	fs.dev.stdout.write = old;
-}
-
 function MGJuname(argc, argv, sys) {
 	var output = [];
 
@@ -68,10 +59,8 @@ function Bash(cmd) {
 	var args = cmd.split(" ");
 	var paths = MGJWhereis(args[0]);
 	if (paths.length > 0) {
-		MGJcreateLogContext(args[0], function () {
-			args.shift();
-			MinGJ.exec(paths[0], args);
-		});
+		args.shift();
+		MinGJ.exec(paths[0], args);
 	} else {
 		console.log(`bash: ${args[0]}: command not found`);
 	}

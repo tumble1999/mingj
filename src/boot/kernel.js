@@ -7,6 +7,13 @@ class device
 	}
 }
 
+class blockDevice extends device {
+	constructor(size) {
+		super();
+		this.data = new ArrayBuffer(size);
+	}
+}
+
 class kernel
 {
 	constructor(initramfs)

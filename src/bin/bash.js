@@ -87,16 +87,6 @@ function MGJLogin(username) {
 	console.log(`\n${location.hostname} login: ${username}`)
 }
 
-/*
- * Commands:
- * /bin
- */
-fs.bin.whereis = function (argc, argv, sys) {
-	var places = MGJWhereis(argv[1]);
-	var list = places.map(p => `${argv[1]}:${p}`);
-	sys.print(list.join("\n"));
-}
-
 fs.bin.bash = function (argc, argv, sys) {
 	if (argv.length > 1) {
 		sys.print("JS Bash alpha 1.0");

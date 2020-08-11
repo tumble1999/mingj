@@ -1,7 +1,7 @@
 class blockDevice extends device {
 	constructor(data) {
 		super(
-			function read(pos = 0, type = "Uint8",) {
+			function read(pos = 0, type = "Uint8") {
 				if (!blockDevice.types.includes(type)) return undefined;
 				return this.view["get" + type](pos);
 			},

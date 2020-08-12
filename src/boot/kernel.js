@@ -231,14 +231,8 @@ class kernel {
 
 	mknod(name,type,major,minor) {
 		if(!['b','c'].includes(type)) this.print("mknod: "+type +": invalid device type");
-		//GetPlace
-		var top = this.open(this.realpath(name+ "/.."));
-		var basename = this.basename(name);
-
-		var dev;
-		if(type=='b') dev = new blockDevice();
-		if(type=='c') dev = null;
-		top[basename] = dev;
+		if(type=='b') this.write(name,new blockDevice());
+		if(type=='c') this.write(name, new charDevice());
 	}
 
 	mkdir(path,mode) {

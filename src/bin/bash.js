@@ -18,40 +18,18 @@ var MinGJ = new kernel(fs);
 MinGJ.env.username = "js";
 
 function MGJgetPrompt() {
-	return `${MinGJ.env.username}@${location.hostname}:${MinGJ.env.cd}$ `
+	console.warn("MGJgetPrompt() has deprecated in favor of sys.getprompt()")
+	return MinGJ.getprompt();
 }
 
 function MGJWhereis(name) {
-	var places = [];
-	for (const p of MinGJ.env.path) {
-		var pathDir = MinGJ.open(p);
-		if (pathDir[name]) {
-			places.push(`${p}/${name}`);
-		}
-		//console.log(pathDir);
-	}
-	return places;
+	console.warn("MGJWhereis(name) has deprecated in favor of sys.whereis(name)")
+	return MinGJ.whereis(name);
 }
 
 function MGJuname(argc, argv, sys) {
-	var output = [];
-
-	function addArg(a, b, value="") {
-		var all = argv.includes("-a") || argv.includes("--all");
-		if (argv.includes(`--${a}`) || argv.includes(`-${b}`) || (all && value !== "")) {
-			output.push(value || "unknown");
-		}
-	}
-
-	addArg("kernel-name", "v", "MinGJ");
-	addArg("nodename", "n", location.hostname);
-	addArg("kernel-release", "r");
-	addArg("kernel-version", "v");
-	addArg("machine", "m", platform.os);
-	addArg("processor", "p");
-	addArg("hardware-platform", "i");
-	addArg("operating-system", "o", platform.name);
-	return output.join(" ");
+	console.warn("MGJUname(argc, argv, sys) has deprecated in favor of sys.uname(argv)")
+	return sys.uname(argv)
 }
 
 function Bash(cmd) {
@@ -69,11 +47,8 @@ function Bash(cmd) {
 window.Bash = Bash;
 
 function MGJLogin(username) {
-	MinGJ.env.username = username;
-	if (typeof(MinGJ.home[username]) != "object") {
-		MinGJ.home[username] = {};
-	}
-	console.log(`\n${location.hostname} login: ${username}`)
+	MinGJ.exec("/bin/su",["-s",username]);
+	MinGJ.print(`\n${location.hostname} login: ${username}`)
 }
 
 fs.bin.bash = function (argc, argv, sys) {

@@ -90,7 +90,8 @@ class kernel {
 		return file;
 	}
 
-	realpath(path) {
+	realpath(...path) {
+		path = path.join("/");
 		var resolved_path = new Array;
 		var parts = path.split("/").filter(part=>(part!==""&&part!=="."));
 
@@ -109,26 +110,6 @@ class kernel {
 	joinPath(a = ".", b = ".") {
 		console.warn("sys.joinPath has been depracated for the more acurate sys.realpath");
 		return this.realpath(a + "/" + b);
-		var start = a[0] == "/" || b[0] == "/" ? "/" : "";
-		var path = [];
-		var aP = a.split("/").filter(f => f != "");
-		var bP = b.split("/").filter(f => f != "");
-
-		function addFolder(f) {
-			if (f == "..") path.pop();
-			if (f != ".." && f != ".") path.push(f);
-		}
-
-		if (b[0] != "/") {
-			for (const af of aP) {
-				addFolder(af);
-			}
-		}
-
-		for (const bf of bP) {
-			addFolder(bf);
-		}
-		return start + path.join("/");
 	}
 
 	pathExist(path) {
@@ -173,7 +154,7 @@ class kernel {
 	}
 
 	parentPath(path) {
-		return this.joinPath(path, "..");
+		return this.realpath(path + "/..");
 	}
 
 	basename(path) {
@@ -181,7 +162,7 @@ class kernel {
 	}
 
 	write(path, content) {
-		var top = this.open(this.joinPath(path, ".."));
+		var top = this.open(this.realpath(path + "/.."));
 		var basename = this.basename(path);
 		var obj = top[basename];
 
@@ -208,7 +189,7 @@ class kernel {
 	mount(devPath, path) {
 		var new_path = this.getAbsolutePath(path);
 		var basename = this.basename(new_path);
-		new_path = this.joinPath(new_path, "..");
+		new_path = this.realpath(new_path + "/..");
 		var dev = this.open(dev);
 
 		if(dev instanceof blockDevice){
@@ -226,7 +207,7 @@ class kernel {
 	umount(path) {
 		var new_path = this.getAbsolutePath(path);
 		var basename = this.basename(new_path);
-		new_path = this.joinPath(new_path, "..");
+		new_path = this.realpath(new_path + "/..");
 
 		delete this.open(new_path)[basename];
 		return;
@@ -253,7 +234,7 @@ class kernel {
 	mknod(name,type,major,minor) {
 		if(!['b','c'].includes(type)) this.print("mknod: "+type +": invalid device type");
 		//GetPlace
-		var top = this.open(this.joinPath(name, ".."));
+		var top = this.open(this.realpath(name+ "/.."));
 		var basename = this.basename(name);
 
 		var dev;
@@ -267,5 +248,41 @@ class kernel {
 		var parent = this.parentPath(path);
 		if(!this.pathExist(parent)) this.mkdir(parent);
 		this.write(path,new Folder);
+	}
+	uname(argv) {
+		var output = [];
+	
+		function addArg(a, b, value="") {
+			var all = argv.includes("-a") || argv.includes("--all");
+			if (argv.includes(`--${a}`) || argv.includes(`-${b}`) || (all && value !== "")) {
+				output.push(value || "unknown");
+			}
+		}
+	
+		addArg("kernel-name", "v", "MinGJ");
+		addArg("nodename", "n", location.hostname);
+		addArg("kernel-release", "r");
+		addArg("kernel-version", "v");
+		addArg("machine", "m", platform.os);
+		addArg("processor", "p");
+		addArg("hardware-platform", "i");
+		addArg("operating-system", "o", platform.name);
+		return output.join(" ");
+	}
+
+	whereis(name) {
+		var places = [];
+		for (const p of MinGJ.env.path) {
+			var pathDir = MinGJ.open(p);
+			if (pathDir[name]) {
+				places.push(`${p}/${name}`);
+			}
+			//console.log(pathDir);
+		}
+		return places;
+	}
+
+	getprompt(){
+		return `${this.env.username}@${location.hostname}:${this.env.cd}$ `
 	}
 }

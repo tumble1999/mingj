@@ -187,9 +187,6 @@ class kernel {
 	}
 
 	mount(devPath, path) {
-		var new_path = this.getAbsolutePath(path);
-		var basename = this.basename(new_path);
-		new_path = this.realpath(new_path + "/..");
 		var dev = this.open(dev);
 
 		if(dev instanceof blockDevice){
@@ -198,9 +195,10 @@ class kernel {
 		}
 		if(typeof(dev) != "object") {
 			this.print("mount: " + devPath + ": is not a mountable node.")
+			return;
 		}
-		
-		this.open(new_path)[basename] = dev;
+
+		this.write(path,dev)
 		return;
 	}
 

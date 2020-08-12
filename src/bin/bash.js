@@ -24,7 +24,7 @@ function MGJgetPrompt() {
 function MGJWhereis(name) {
 	var places = [];
 	for (const p of MinGJ.env.path) {
-		var pathDir = MinGJ.getObj(p);
+		var pathDir = MinGJ.open(p);
 		if (pathDir[name]) {
 			places.push(`${p}/${name}`);
 		}

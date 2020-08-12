@@ -4,6 +4,6 @@ fs.bin.dir = function (argc, argv, sys) {
 	if (!sys.pathExist(path)) {
 		sys.printerr(`${argv[0]}: ${path}: does not exist`);
 	}
-	var things = sys.getObj(path);
+	var things = sys.open(path);
 	sys.print(Object.keys(things).join(" "));
 }

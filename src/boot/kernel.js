@@ -199,7 +199,7 @@ class kernel {
 		if(typeof(dev) != "object") {
 			this.print("mount: " + devPath + ": is not a mountable node.")
 		}
-
+		
 		this.open(new_path)[basename] = dev;
 		return;
 	}

@@ -15,5 +15,4 @@ const fs = new Folder({
 var MinGJ = new kernel(fs);
 
 /* Config environment. */
-MinGJ.exec("/bin/su",["js"])
-//MinGJ.env.username = "js";
+MinGJ.env.username = "js";

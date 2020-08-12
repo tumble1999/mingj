@@ -8,13 +8,13 @@ function stdout(text,level=0) {
 	p.innerText = text;
 	switch (level) {
 		case 1:
-			p.className = "info";
+			p.className = "color-blue";
 			break;
 		case 2:
-			p.className = "warn";
+			p.className = "color-yellow";
 			break;
 		case 3:
-			p.className = "error";
+			p.className = "color-red";
 			break;
 		default:
 			break;

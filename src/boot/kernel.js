@@ -34,7 +34,7 @@ class kernel {
 
 		this.fs = initramfs;
 		this.env = {
-			"shell":"/bin/bash",
+			"shell": "/bin/bash",
 			"cd": "/",
 			"path": ["/bin"],
 			"hostname": this.fs.etc.hostname
@@ -42,8 +42,8 @@ class kernel {
 
 		this.buffer = new String;
 
-		this.write("/dev/stdout",new device(null, console.log));
-		this.write("/dev/stderr",new device(null, console.error));
+		this.write("/dev/stdout", new device(null, console.log));
+		this.write("/dev/stderr", new device(null, console.error));
 
 		window.document.body.addEventListener("keyup", function (event) {
 			if (event.key == "Backspace" && k.buffer.length > 0) {
@@ -68,7 +68,7 @@ class kernel {
 					}, 400);
 				}
 			});
-		},null));
+		}, null));
 		// this.fork?
 		this.exec("/bin/init");
 	}
@@ -203,14 +203,14 @@ class kernel {
 
 	mount(devPath, path) {
 		var dev = this.getObj(dev);
-		if(dev instanceof blockDevice){
+		if (dev instanceof blockDevice) {
 			this.print("mount: " + devPath + ": Block device mounting coming Soon");
 			return;
 		}
-		if(typeof(dev) != "object") {
+		if (typeof (dev) != "object") {
 			this.print("mount: " + devPath + ": is not a mountable node.")
 		}
-		this.write(path,dev)
+		this.write(path, dev)
 		return;
 	}
 
@@ -218,35 +218,58 @@ class kernel {
 		this.delete(this.getAbsolutePath(path));
 	}
 
+	printk(level, ...strings) {
+		var text = sprintf(...strings);
+		switch (level) {
+
+			case 0:	// KERN_EMERG	Emergency condition, system is probably dead
+			case 1:	// KERN_ALERT	Some problem has occurred, immediate attention is needed
+			case 2:	// KERN_CRIT	A critical condition
+			case 3:	// KERN_ERR	An error has occurred
+			case 4:	// KERN_WARNING	A warning
+			return this.write("/dev/stderr",text)
+			case 5:	// KERN_NOTICE	Normal message to take note of
+			case 6:	// KERN_INFO	Some information
+			case 7:	// KERN_DEBUG	Debug information related to the program
+			default:
+			return this.write("/dev/stdout",text);
+		}
+	}
+
+	printerr(...strings) {
+		this.printk(3,...strings);
+	}
+
 	print(...strings) {
-		var final = new String;
+		this.printk(null,...strings);
+		/*var final = new String;
 		strings.forEach(function (string) {
 			final += string;
 		});
-		return this.write("/dev/stdout", final);
+		return this.write("/dev/stdout", final);*/
 	}
 
 	gendevname(obj) {
 		var name = obj.constructor.name;
 		var i = 1;
-		while(true){
-			if(this.fs.dev[name+i]==obj||!this.fs.dev[name+i]) break;
+		while (true) {
+			if (this.fs.dev[name + i] == obj || !this.fs.dev[name + i]) break;
 			i++;
 		}
-		name = name+i;
+		name = name + i;
 	}
 
-	mknod(name,type,major,minor) {
-		if(!['b','c'].includes(type)) this.print("mknod: "+type +": invalid device type");
-		if(this.pathExist(name)) return 1;
-		if(type=='b') dev = this.write(name,new blockDevice);
-		if(type=='c') dev = this.write(name,new charDevice);
+	mknod(name, type, major, minor) {
+		if (!['b', 'c'].includes(type)) this.print("mknod: " + type + ": invalid device type");
+		if (this.pathExist(name)) return 1;
+		if (type == 'b') dev = this.write(name, new blockDevice);
+		if (type == 'c') dev = this.write(name, new charDevice);
 	}
 
-	mkdir(path,mode) {
-		if(this.pathExist(path)) return;
+	mkdir(path, mode) {
+		if (this.pathExist(path)) return;
 		var parent = this.get_parent(path);
-		if(!this.pathExist(parent)) this.mkdir(parent);
-		this.write(path,new Folder);
+		if (!this.pathExist(parent)) this.mkdir(parent);
+		this.write(path, new Folder);
 	}
 }

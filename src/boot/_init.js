@@ -4,8 +4,6 @@ const fs = {
 			sys.write("/dev/stdout", "OK.");
 		},
 	}),
-	"home": new Folder,
-	"mnt": new Folder,
 	"etc": new Folder({
 		"hostname": "MinGJ"
 	}),
@@ -24,7 +22,7 @@ var shell = (cmd) => {
 		argv.shift();
 		
 	} else {
-		console.log(`bash: ${argv[0]}: command not found`);
+		MinGJ.printerr(`bash: ${argv[0]}: command not found`);
 	}
 };
 

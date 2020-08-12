@@ -17,7 +17,7 @@ class blockDevice extends device {
 		if (!blockDevice.types.includes(type)) return NaN;
 		this.data.byteLength / blockDevice.typeSizes[blockDevice.typeSizes.indexOf(type)]
 	}
-	readArray(pos=0, count=1, type = "Uint8",) {
+	readArray(pos, count, type = "Uint8",) {
 		if (!blockDevice.types.includes(type)) return [NaN];
 		count = count || this.getBlockCount(type);
 		var array = [];

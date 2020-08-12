@@ -1,5 +1,9 @@
 
 fs.bin.wget = function (argc, argv, sys) {
 	var url = argv[1];
-	sys.write(sys.basename(url),WEBAPIhttpGet(url))
+
+	var currentFolder = sys.getObj(sys.getAbsolutePath("."));
+	var urlparts = url.split("/");
+	var name = urlparts[urlparts.length - 1];
+	currentFolder[name] = WEBAPIhttpGet(url);
 }

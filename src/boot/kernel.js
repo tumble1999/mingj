@@ -1,8 +1,7 @@
 class kernel {
 	constructor(initramfs) {
-		var k = this;
-
-		var keys = new Array;
+		var t = this;
+		var keys = new Array();
 		var i = 65;
 
 		keys.push(32);
@@ -40,27 +39,27 @@ class kernel {
 			"hostname": this.fs.etc.hostname
 		};
 
-		this.buffer = new String;
+		this.buffer = new String();
 
-		this.write("/dev/stdout", new device(null, console.log));
-		this.write("/dev/stderr", new device(null, console.error));
+		this.fs.dev.stdout = new device(null, console.log);
+		this.fs.dev.stderr = new device(null, console.error);
 
 		window.document.body.addEventListener("keyup", function (event) {
-			if (event.key == "Backspace" && k.buffer.length > 0) {
-				k.buffer = k.buffer.substring(0, k.buffer.length - 1);
+			if (event.key == "Backspace" && t.buffer.length > 0) {
+				t.buffer = t.buffer.substring(0, t.buffer.length - 1);
 			} else if (event.key == "Enter") {
-				k.buffer += '\n';
+				t.buffer += '\n';
 			} else if (keys.includes(event.keyCode)) {
-				k.buffer += event.key;
+				t.buffer += event.key;
 			}
 		});
 
-		this.write("/dev/stdin", new device(function () {
+		this.fs.dev.stdin = new device(function () {
 			return new Promise(function pcb(res) {
 				var tmp_buffer = new String();
-				if (k.buffer[k.buffer.length - 1] == '\n') {
-					tmp_buffer = k.buffer;
-					k.buffer = new String;
+				if (t.buffer[t.buffer.length - 1] == '\n') {
+					tmp_buffer = t.buffer;
+					t.buffer = new String();
 					res(tmp_buffer);
 				} else {
 					setTimeout(function () {
@@ -68,9 +67,36 @@ class kernel {
 					}, 400);
 				}
 			});
-		}, null));
+		}, null);
 		// this.fork?
 		this.exec("/bin/init");
+	}
+
+	mount(devPath, path) {
+		var new_path = this.getAbsolutePath(path);
+		var basename = this.basename(new_path);
+		new_path = this.joinPath(new_path, "..");
+		var dev = this.getObj(dev);
+
+		if(dev instanceof blockDevice){
+			this.print("mount: " + devPath + ": Block device mounting coming Soon");
+			return;
+		}
+		if(typeof(dev) != "object") {
+			this.print("mount: " + devPath + ": is not a mountable node.")
+		}
+
+		this.getObj(new_path)[basename] = dev;
+		return;
+	}
+
+	umount(path) {
+		var new_path = this.getAbsolutePath(path);
+		var basename = this.basename(new_path);
+		new_path = this.joinPath(new_path, "..");
+
+		delete this.getObj(new_path)[basename];
+		return;
 	}
 
 	getObj(path, start) {
@@ -136,9 +162,9 @@ class kernel {
 
 	exec(path, argv) {
 		var exe = this.getObj(path);
-		var new_argv = new Array;
-		var old_stdout = new Object;
-		var old_stderr = new Object;
+		var new_argv = new Array();
+		var old_stdout = new Object();
+		var old_stderr = new Object();
 		var code = -1;
 
 		if (!(argv instanceof Array)) {
@@ -162,7 +188,7 @@ class kernel {
 		return code;
 	}
 
-	get_parent(path) {
+	parentPath(path) {
 		return this.joinPath(path, "..");
 	}
 
@@ -171,7 +197,7 @@ class kernel {
 	}
 
 	write(path, content) {
-		var top = this.getObj(this.get_parent(path));
+		var top = this.getObj(this.joinPath(path, ".."));
 		var basename = this.basename(path);
 		var obj = top[basename];
 
@@ -185,12 +211,6 @@ class kernel {
 		return;
 	}
 
-	delete(path) {
-		var top = this.getObj(this.get_parent(path));
-		var basename = this.basename(path);
-		delete top[basename];
-	}
-
 	read(path) {
 		var obj = this.getObj(path);
 
@@ -201,48 +221,8 @@ class kernel {
 		}
 	}
 
-	mount(devPath, path) {
-		var dev = this.getObj(dev);
-		if (dev instanceof blockDevice) {
-			this.print("mount: " + devPath + ": Block device mounting coming Soon");
-			return;
-		}
-		if (typeof (dev) != "object") {
-			this.print("mount: " + devPath + ": is not a mountable node.")
-		}
-		this.write(path, dev)
-		return;
-	}
-
-	umount(path) {
-		this.delete(this.getAbsolutePath(path));
-	}
-
-	printk(level, ...strings) {
-		var text = sprintf(...strings);
-		switch (level) {
-
-			case 0:	// KERN_EMERG	Emergency condition, system is probably dead
-			case 1:	// KERN_ALERT	Some problem has occurred, immediate attention is needed
-			case 2:	// KERN_CRIT	A critical condition
-			case 3:	// KERN_ERR	An error has occurred
-			case 4:	// KERN_WARNING	A warning
-			return this.write("/dev/stderr",text)
-			case 5:	// KERN_NOTICE	Normal message to take note of
-			case 6:	// KERN_INFO	Some information
-			case 7:	// KERN_DEBUG	Debug information related to the program
-			default:
-			return this.write("/dev/stdout",text);
-		}
-	}
-
-	printerr(...strings) {
-		this.printk(3,...strings);
-	}
-
 	print(...strings) {
-		this.printk(null,...strings);
-		/*var final = new String;
+		var final = new String();
 		strings.forEach(function (string) {
 			final += string;
 		});
@@ -259,17 +239,22 @@ class kernel {
 		name = name + i;
 	}
 
-	mknod(name, type, major, minor) {
-		if (!['b', 'c'].includes(type)) this.print("mknod: " + type + ": invalid device type");
-		if (this.pathExist(name)) return 1;
-		if (type == 'b') dev = this.write(name, new blockDevice);
-		if (type == 'c') dev = this.write(name, new charDevice);
+	mknod(name,type,major,minor) {
+		if(!['b','c'].includes(type)) this.print("mknod: "+type +": invalid device type");
+		//GetPlace
+		var top = this.getObj(this.joinPath(name, ".."));
+		var basename = this.basename(name);
+
+		var dev;
+		if(type=='b') dev = new blockDevice();
+		if(type=='c') dev = null;
+		top[basename] = dev;
 	}
 
-	mkdir(path, mode) {
-		if (this.pathExist(path)) return;
-		var parent = this.get_parent(path);
-		if (!this.pathExist(parent)) this.mkdir(parent);
-		this.write(path, new Folder);
+	mkdir(path,mode) {
+		if(this.pathExist(path)) return;
+		var parent = this.parentPath(path);
+		if(!this.pathExist(parent)) this.mkdir(parent);
+		this.write(path,new Folder);
 	}
 }

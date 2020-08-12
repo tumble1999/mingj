@@ -226,7 +226,7 @@ class kernel {
 		strings.forEach(function (string) {
 			final += string;
 		});
-		return this.write("/dev/stdout", final);*/
+		return this.write("/dev/stdout", final);
 	}
 
 	gendevname(obj) {

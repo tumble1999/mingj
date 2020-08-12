@@ -3,8 +3,7 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	terser = require('gulp-terser'),
 	emcc = require('gulp-emscripten'),
-	filter = require('gulp-filter'),
-	replace = require('gulp-replace');
+	filter = require('gulp-filter')
 
 	
 var siteurl = "https://tumble1999.github.io/mingj/";
@@ -22,13 +21,13 @@ function buildCPP() {
 		.pipe(gulp.dest('dist'))
 }
 function buildJS() {
-	return gulp.src(["src/mingj.js","src/boot/**/*.js", "src/lib/*.js", "src/bin/**/*.js"],{ sourcemaps: true })
+	return gulp.src(["src/mingj.js","src/boot/**/*.js", "src/lib/*.js", "src/bin/**/*.js"])
 		.pipe(plumber())
 		.pipe(terser({
 			warnings: "verbose"
 		}))
 		.pipe(concat('mingj.min.js'))
-		.pipe(gulp.dest('dist',{ sourcemaps: '.' }))
+		.pipe(gulp.dest('dist'))
 }
 function buildUS() {
 	return gulp.src(["misc/header.user.js", "dist/mingj.min.js", "misc/footer.user.js"])
@@ -36,15 +35,7 @@ function buildUS() {
 		.pipe(gulp.dest('dist'))
 }
 
-function distWasmPath() {
-	return gulp.src(['dist/mingj.min.js','dist/mingj.user.js'])
-	.pipe(replace('mingj.wasm',siteurl+"dist/mingj.wasm"))
-	.pipe(gulp.dest('dist'));
-}
-
 gulp.task("build-cpp",buildCPP);
 gulp.task('build-js', buildJS);
 gulp.task('build-us', buildUS);
-gulp.task('build-dist', distWasmPath);
 gulp.task('build', gulp.series('build-cpp','build-js', 'build-us'));
-gulp.task('build-full', gulp.series('build','build-dist'));

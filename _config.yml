@@ -30,8 +30,20 @@ kramdown:
   - package.json
   - vendor
   - .gitignore
+  - .gitattributes
   - CNAME
   - icomoon-selection.json
+  - src
+  - node_modules
+  - misc
+  - .vscode
+  - devices.txt
+  - wasm
+  - gulpfile.js
+  - LICENSE
+  - package**.json
+  - TODO.md
+
 defaults:
   - scope:
       path: ""

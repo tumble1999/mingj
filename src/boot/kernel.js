@@ -102,11 +102,8 @@ class kernel {
 	}
 
 	getAbsolutePath(path) {
-		console.warn("sys.getAbsolutePath has been depracated for the more acurate sys.realpath");
-		if (!path[0] != "/") {
-			path = this.realpath(this.env.cd + "/" + path);
-		}
-		return this.realpath(path);
+		console.info("please can someone find the  name for a syscall that adds path to cd");
+		return this.realpath((path[0]=="/"?"":this.env.cd+"/")+path);
 	}
 
 	joinPath(a = ".", b = ".") {

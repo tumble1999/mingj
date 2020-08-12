@@ -72,34 +72,7 @@ class kernel {
 		this.exec("/bin/init");
 	}
 
-	mount(devPath, path) {
-		var new_path = this.getAbsolutePath(path);
-		var basename = this.basename(new_path);
-		new_path = this.joinPath(new_path, "..");
-		var dev = this.getObj(dev);
-
-		if(dev instanceof blockDevice){
-			this.print("mount: " + devPath + ": Block device mounting coming Soon");
-			return;
-		}
-		if(typeof(dev) != "object") {
-			this.print("mount: " + devPath + ": is not a mountable node.")
-		}
-
-		this.getObj(new_path)[basename] = dev;
-		return;
-	}
-
-	umount(path) {
-		var new_path = this.getAbsolutePath(path);
-		var basename = this.basename(new_path);
-		new_path = this.joinPath(new_path, "..");
-
-		delete this.getObj(new_path)[basename];
-		return;
-	}
-
-	getObj(path, start) {
+	open(path, start) {
 		var new_path = path.split("/").filter(p => p != "");
 		var parent = [];
 		var file = start || this.fs;
@@ -117,14 +90,28 @@ class kernel {
 		return file;
 	}
 
-	getAbsolutePath(path) {
-		if (!path[0] != "/") {
-			path = this.joinPath(this.env.cd, path);
+	realpath(path) {
+		var resolved_path = new Array;
+		var parts = path.split("/").filter(part=>(part!==""&&part!=="."));
+
+		for(var part of parts) {
+			if(part=="..") resolved_path.pop();
+			else resolved_path.push(part);
 		}
-		return path;
+		return (path[0]=="/"?"/":"") + resolved_path.join("/");
+	}
+
+	getAbsolutePath(path) {
+		console.warn("sys.getAbsolutePath has been depracated for the more acurate sys.realpath");
+		if (!path[0] != "/") {
+			path = this.realpath(this.env.cd + "/" + path);
+		}
+		return this.realpath(path);
 	}
 
 	joinPath(a = ".", b = ".") {
+		console.warn("sys.joinPath has been depracated for the more acurate sys.realpath");
+		return this.realpath(a + "/" + b);
 		var start = a[0] == "/" || b[0] == "/" ? "/" : "";
 		var path = [];
 		var aP = a.split("/").filter(f => f != "");
@@ -161,7 +148,7 @@ class kernel {
 	}
 
 	exec(path, argv) {
-		var exe = this.getObj(path);
+		var exe = this.open(path);
 		var new_argv = new Array();
 		var old_stdout = new Object();
 		var old_stderr = new Object();
@@ -197,7 +184,7 @@ class kernel {
 	}
 
 	write(path, content) {
-		var top = this.getObj(this.joinPath(path, ".."));
+		var top = this.open(this.joinPath(path, ".."));
 		var basename = this.basename(path);
 		var obj = top[basename];
 
@@ -212,13 +199,40 @@ class kernel {
 	}
 
 	read(path) {
-		var obj = this.getObj(path);
+		var obj = this.open(path);
 
 		if (obj instanceof device) {
 			return obj.read();
 		} else {
 			return obj;
 		}
+	}
+
+	mount(devPath, path) {
+		var new_path = this.getAbsolutePath(path);
+		var basename = this.basename(new_path);
+		new_path = this.joinPath(new_path, "..");
+		var dev = this.open(dev);
+
+		if(dev instanceof blockDevice){
+			this.print("mount: " + devPath + ": Block device mounting coming Soon");
+			return;
+		}
+		if(typeof(dev) != "object") {
+			this.print("mount: " + devPath + ": is not a mountable node.")
+		}
+
+		this.open(new_path)[basename] = dev;
+		return;
+	}
+
+	umount(path) {
+		var new_path = this.getAbsolutePath(path);
+		var basename = this.basename(new_path);
+		new_path = this.joinPath(new_path, "..");
+
+		delete this.open(new_path)[basename];
+		return;
 	}
 
 	print(...strings) {
@@ -242,7 +256,7 @@ class kernel {
 	mknod(name,type,major,minor) {
 		if(!['b','c'].includes(type)) this.print("mknod: "+type +": invalid device type");
 		//GetPlace
-		var top = this.getObj(this.joinPath(name, ".."));
+		var top = this.open(this.joinPath(name, ".."));
 		var basename = this.basename(name);
 
 		var dev;

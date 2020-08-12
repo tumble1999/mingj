@@ -1,54 +1,21 @@
+const fs = {
+	"bin": new Folder({
+		"init": function (argc, argv, sys) {
+			sys.write("/dev/stdout", "OK.");
+		},
+	}),
+	"home": new Folder,
+	"mnt": new Folder,
+	"etc": new Folder({
+		"hostname": "MinGJ"
+	}),
+	"dev": new Folder
+};
 
+var MinGJ = new kernel(fs);
 
-fs.bin.bash = function (argc, argv, sys) {
-	
-
-	function clearParamEnv() {
-		var i = 0;
-		while (sys.env[i]) { delete sys.env[i];i++; };
-	}
-
-	function loginBash() {
-
-	}
-
-
-	if (argc < 2) {
-		MinGJ.print("JS Bash alpha 1.0");
-		return;
-	}
-	Object.assign(sys.env, argv);
-	argv.shift();
-	sys.print(MGJgetPrompt(), argv.join(" "));
-	var opt_param = false;
-	var opt_end = false;
-	while (argv.length > 1) {
-		var param = argv[0];
-		if (!opt_end && param[0] == '-') {
-			param = argv.shift();
-			switch (param) {
-				case '-c':
-					clearParamEnv();
-					Object.assign(sys.env, argv)
-					break;
-				case '-l':
-					loginBash();
-				default:
-			}
-
-			continue;
-		}
-		var paths = MGJWhereis(argv[0]);
-		if (paths.length > 0) {
-			argv.shift();
-			sys.exec(paths[0], argv);
-		} else {
-			sys.print(`${sys.env[0]}: ${argv[0]}: command not found`);
-		}
-	}
-	clearParamEnv();
-}
-
+/* Config environment. */
+MinGJ.env.username = "js";
 
 function MGJgetPrompt() {
 	return `${MinGJ.env.username}@${location.hostname}:${MinGJ.env.cd}$ `
@@ -66,10 +33,52 @@ function MGJWhereis(name) {
 	return places;
 }
 
+function MGJuname(argc, argv, sys) {
+	var output = [];
+
+	function addArg(a, b, value="") {
+		var all = argv.includes("-a") || argv.includes("--all");
+		if (argv.includes(`--${a}`) || argv.includes(`-${b}`) || (all && value !== "")) {
+			output.push(value || "unknown");
+		}
+	}
+
+	addArg("kernel-name", "v", "MinGJ");
+	addArg("nodename", "n", location.hostname);
+	addArg("kernel-release", "r");
+	addArg("kernel-version", "v");
+	addArg("machine", "m", platform.os);
+	addArg("processor", "p");
+	addArg("hardware-platform", "i");
+	addArg("operating-system", "o", platform.name);
+	return output.join(" ");
+}
+
+function Bash(cmd) {
+	MinGJ.print(MGJgetPrompt(), cmd);
+	var args = cmd.split(" ");
+	var paths = MGJWhereis(args[0]);
+	if (paths.length > 0) {
+		args.shift();
+		MinGJ.exec(paths[0], args);
+	} else {
+		console.log(`bash: ${args[0]}: command not found`);
+	}
+}
+
+window.Bash = Bash;
+
 function MGJLogin(username) {
 	MinGJ.env.username = username;
 	if (typeof(MinGJ.home[username]) != "object") {
 		MinGJ.home[username] = {};
 	}
 	console.log(`\n${location.hostname} login: ${username}`)
+}
+
+fs.bin.bash = function (argc, argv, sys) {
+	if (argv.length > 1) {
+		sys.print("JS Bash alpha 1.0");
+		return;
+	}
 }

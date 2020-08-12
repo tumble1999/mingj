@@ -3,7 +3,7 @@ fs.dev.stderr.write = (...args) => stdout(args.join(" "), 3)
 
 function startDemo() {
 	stdin(MGJgetPrompt()).then(input => {
-		shell(input);
+		Bash(input);
 		setTimeout(startDemo, 0);
 	})
 }

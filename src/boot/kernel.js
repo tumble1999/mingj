@@ -283,6 +283,7 @@ class kernel {
 	}
 
 	getprompt(){
-		return `${this.env.username}@${location.hostname}:${this.env.cd}$ `
+		var username = this.env.username||"root";
+		return `${username}@${location.hostname}:${this.env.cd}${username=="root"?"#":"$"} `;
 	}
 }

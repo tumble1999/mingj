@@ -1,5 +1,5 @@
-#ifndef _FACE_H_
-#define _FACE_H_
+#ifndef _FACE_H
+#define _FACE_H
 #include <emscripten/bind.h>
 
 #include "process.cpp"
@@ -32,4 +32,4 @@ EMSCRIPTEN_BINDINGS(face_class) {
 	;
 }
 
-#endif //!_FACE_H_
+#endif //!_FACE_H

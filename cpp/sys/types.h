@@ -1,29 +1,18 @@
 #ifndef _SYS_TYPES_H
 #define _SYS_TYPES_H
 
-#ifndef __uid_t_defined
-typedef unsigned int uid_t;
-# define __uid_t_defined
-#endif
 
-#ifndef gid_t_defined
-typedef unsigned int gid_t;
-# define __gid_t_defined
-#endif
+#ifndef _TIME_T
+#define _TIME_T
+typedef long time_t;
+#endif //!_TIME_T
 
-#ifndef __pid_t_defined
-typedef unsigned int pid_t;
-# define __pid_t_defined
-#endif
+#ifndef NULL
+#define NULL ((void *) 0)
+#endif //!NULL
 
-#ifndef __tty_t_defined
-typedef unsigned int tty_t;
-# define __tty_t_defined
-#endif
+typedef int pid_t;
+typedef unsigned short uid_t;
+typedef unsigned char gid_t;
 
-#ifndef __time_t_defined
-typedef unsigned int time_t;
-# define __time_t_defined
-#endif
-
-#endif
+#endif //!_SYS_TYPES_H

@@ -1,5 +1,5 @@
-#ifndef _PROCESS_H_
-#define _PROCESS_H_
+#ifndef _PROCESS_H
+#define _PROCESS_H
 
 #include <emscripten/bind.h>
 
@@ -34,4 +34,4 @@ EMSCRIPTEN_BINDINGS(process_class) {
     .function("exit", &process::exit)
 	;
 }
-#endif //!_PROCESS_H_
+#endif //!_PROCESS_H

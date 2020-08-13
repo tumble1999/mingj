@@ -35,12 +35,12 @@ headers: headers,
 }).then(response => response.json())
 .then(info=> {
 	info.forEach(release=>{
-		var assets = new Array(3);
+		var assets = new Array(4);
 		for (const asset of release.assets) {
 			if(asset.name.includes(".min.js"))  {
 				if(asset.name.includes(".min.js.map")) {
 					//source map
-					assets[1] = {name:asset.name,href:asset.browser_download_url}
+					assets[2] = {name:asset.name,href:asset.browser_download_url}
 				} else {
 					// script file
 					assets[0] = {name:asset.name,href:asset.browser_download_url}
@@ -48,7 +48,7 @@ headers: headers,
 			}
 			if(asset.name.includes(".user.js")){
 				//user script
-					assets[2] = {name:asset.name,href:asset.browser_download_url}
+					assets[3] = {name:asset.name,href:asset.browser_download_url}
 			}
 		}
 
@@ -74,7 +74,7 @@ headers: headers,
 				if(file.filename.includes(".min.js"))  {
 					if(file.filename.includes(".min.js.map")) {
 						//source map
-						assets[1] = {name:file.filename,href:file.raw_url}
+						assets[3] = {name:file.filename,href:file.raw_url}
 					} else {
 						// script file
 						assets[0] = {name:file.filename,href:file.raw_url}
@@ -83,12 +83,16 @@ headers: headers,
 				if(file.filename.includes(".user.js")){
 					if(file.filename == "footer.user.js"||file.filename == "header.user.js")return;
 					//user script
-					assets[2] = {name:file.filename,href:file.raw_url}
+					assets[3] = {name:file.filename,href:file.raw_url}
+				}
+                                if(file.filename.includes(".wasm")){
+					//web asm
+					assets[1] = {name:file.filename,href:file.raw_url}
 				}
 			}
 			if(assets.filter(i=>i!==defaultAsset).length ==0) return;
 			var commitName = commitInfo.sha.substring(0,7);
-			assets[3] = {name:"MinGJ_" + commitName + ".zip",href:"https://github.com/" + userRepo + "/archive/" + commitInfo.sha + ".zip"}
+			assets[4] = {name:"MinGJ_" + commitName + ".zip",href:"https://github.com/" + userRepo + "/archive/" + commitInfo.sha + ".zip"}
 		
 			var addToRow = createRow(commitName,commitlist);
 			assets.forEach(asset=>{

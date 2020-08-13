@@ -16,6 +16,7 @@ title: How to get MinGJ
 ## More Links
 <ul>
 	<li><a href="{{site.url}}/dist/mingj.min.js" download="mingj.min.js">Download</a></li>
+	<li><a href="{{site.url}}/dist/mingj.wasm" download="mingj.min.js">Download Wasm</a></li>
 	<li><a href="{{site.url}}/dist/mingj.min.js.map" download="mingj.min.js.map">Download Source Maps</a></li>
 	<li><a href="{{site.url}}/dist/mingj.user.js">Install UserScript</a></li>
 </ul>
@@ -27,7 +28,7 @@ title: How to get MinGJ
 	<thead>
 		<td>Version</td>
 		<td>Download</td>
-		<td>SourceMaps</td>
+		<td>Source Maps</td>
 		<td>UserScript</td>
 	</thead>
 	<tr>
@@ -44,7 +45,8 @@ title: How to get MinGJ
 	<thead>
 		<td>Version</td>
 		<td>Download</td>
-		<td>SourceMaps</td>
+		<td>Web Assembly</td>
+		<td>Source Maps</td>
 		<td>UserScript</td>
 		<td>SourceCode</td>
 	</thead>

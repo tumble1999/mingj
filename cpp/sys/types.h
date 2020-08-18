@@ -1,7 +1,6 @@
 #ifndef _SYS_TYPES_H
 #define _SYS_TYPES_H
 
-
 #ifndef _TIME_T
 #define _TIME_T
 typedef long time_t;

@@ -3,9 +3,7 @@
 
 // based off https://elixir.bootlin.com/linux/0.01/source/include/linux/sched.h#L77
 
-#include <emscripten/bind.h>
-
-#include <sys/types.h>
+#include "sys/types.h"
 
 using namespace emscripten;
 
@@ -37,12 +35,4 @@ public:
 };
 
 
-// Binding code
-EMSCRIPTEN_BINDINGS(process_class) {
-  class_<process>("process")
-    .function("fork", &process::fork)
-    .function("execve", &process::execve)
-    .function("exit", &process::exit)
-	;
-}
 #endif //!_PROCESS_H

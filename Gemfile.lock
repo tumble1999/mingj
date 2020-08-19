@@ -274,6 +274,7 @@ GEM
     unf_ext (0.0.7.7)
     unf_ext (0.0.7.7-x64-mingw32)
     unicode-display_width (1.7.0)
+    wdm (0.1.1)
     zeitwerk (2.4.0)
 
 PLATFORMS
@@ -284,9 +285,10 @@ DEPENDENCIES
   github-pages
   jekyll-admin
   nokogiri (>= 1.8.5)
+  wdm (~> 0.1.0)
 
 RUBY VERSION
-   ruby 2.7.0p0
+   ruby 2.6.6p146
 
 BUNDLED WITH
    2.1.4

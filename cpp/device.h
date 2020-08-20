@@ -16,12 +16,8 @@ struct module {
 private:
 		kernel* m_pkernel;
 protected:
-	int register_chrdev(int major, char* name, struct file_operations file_ops) {
-
-	}
-	int unregister_chrdev(int major, char* name) {
-		
-	}
+	int register_chrdev(int major, char* name, struct file_operations file_ops);
+	int unregister_chrdev(int major, char* name);
 public:
 	module(kernel* p_pkernel) {
 		m_pkernel = p_pkernel;

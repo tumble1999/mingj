@@ -16,4 +16,13 @@ struct file_operations {
 	int FUNC_PTR(close,struct node *, struct file *);
 };
 
+
+
+int module::register_chrdev(int major, char* name, struct file_operations fops) {
+	return 0;
+}
+int module::unregister_chrdev(int major, char* name) {
+	return 0;
+}
+
 #endif //!_FS_H

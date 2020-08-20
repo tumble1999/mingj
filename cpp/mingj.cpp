@@ -12,6 +12,7 @@
 
 #include "sys/types.h"
 #include "sys/calls.h"
+#include "sys/utsname.h"
 
 #include "processes/proc_sched.cpp"
 #include "device.h"
@@ -34,20 +35,10 @@ private:
 	const char *k_exceptions[1] = {
 		"Division by zero"
 	};
-	
-	device* devHello;
 
 public:
 	kernel()
 	{
-		devHello = new dev_hello();
-	}
-
-	int hello_init() {
-		return devHello->init();
-	}
-	int hello_exit() {
-		return devHello->exit();
 	}
 
 	// Maybe the error is because the enum??
@@ -96,12 +87,12 @@ public:
 	int tty_write(unsigned ch, std::string buf, int count) { return 0; }
 
 	int syscall(int p_syscall, int argc, char **argv) {
-		printf("[C++] %d: %s", p_syscall, sys_call_name(p_syscall));
+		/*printf("[C++] %d: %s", p_syscall, sys_call_name(p_syscall));
 		for (int i = 0; i < argc; i++)
 		{
 			printf(" %s", argv[i]);
 		}
-		printf("\n");
+		printf("\n");*/
 		switch (p_syscall)
 		{
 		case sys_setup:

@@ -18,10 +18,10 @@ struct file_operations {
 
 
 
-int module::register_chrdev(int major, char* name, struct file_operations fops) {
+int module::register_chrdev(int major, const char* name, struct file_operations* fops) {
 	return 0;
 }
-int module::unregister_chrdev(int major, char* name) {
+int module::unregister_chrdev(int major, const char* name) {
 	return 0;
 }
 

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "device.h"
+#include "module.h"
 #include "fs.h"
 
 class hello_mod : public module
@@ -9,19 +9,26 @@ public:
 
 	static int open(struct node *pnode, struct file *pfile)
 	{
-	return 0;
+		printf("Hello Open\n");
+		return 0;
 	}
 
 	static size_t read(struct file *pfile, char *buffer, size_t length, int offset)
 	{
+		printf("Hello Read\n");
+		return 0;
 	}
 
 	static size_t write(struct file *pfile, char *buffer, size_t length, int offset)
 	{
+		printf("Hello Write\n");
+		return length;
 	}
 
 	static int close(struct node *pnode, struct file *pfile)
 	{
+		printf("Hello Close\n");
+		return 0;
 	}
 
 	int init()
@@ -37,8 +44,8 @@ public:
 
 		register_chrdev(
 			1,			   //major
-			"Hello World", //name
-			hello_file_ops);
+			"Hello Driver", //name
+			&hello_file_ops);
 
 		return 0;
 	}
@@ -46,9 +53,7 @@ public:
 	int exit()
 	{
 		printf("Goodbye World\n");
-		unregister_chrdev(
-			1)
-
-			return 0;
+		unregister_chrdev(1,"Hello Driver");
+		return 0;
 	}
 };

@@ -36,6 +36,9 @@ private:
 		"Division by zero"
 	};
 
+	struct device_struct chrdevs[MAX_CHRDEV] = {NULL,NULL};
+	struct device_struct blkdevs[MAX_BLKDEV] = {NULL,NULL};
+
 public:
 	kernel()
 	{

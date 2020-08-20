@@ -14,6 +14,9 @@
 #include "sys/calls.h"
 
 #include "processes/proc_sched.cpp"
+#include "device.h"
+
+#include "dev_hello.cpp"
 
 #define printk(fmt, ...) printf(fmt, __VA_ARGS__)
 
@@ -29,11 +32,23 @@ class kernel
 {
 private:
 	const char *k_exceptions[1] = {
-		"Division by zero"};
+		"Division by zero"
+	};
+	
+	device* devHello;
 
 public:
 	kernel()
-	{}
+	{
+		devHello = new dev_hello();
+	}
+
+	int hello_init() {
+		return devHello->init();
+	}
+	int hello_exit() {
+		return devHello->exit();
+	}
 
 	// Maybe the error is because the enum??
 	void panic(int exception)
@@ -237,7 +252,10 @@ EMSCRIPTEN_BINDINGS(kernel_class)
 	class_<kernel>("kernel")
 		.constructor()
 		.function("panic", &kernel::panic)
-		.function("ttywrite", &kernel::tty_write);
+		.function("ttywrite", &kernel::tty_write)
+		.function("hello_init", &kernel::hello_init)
+		.function("hello_exit", &kernel::hello_exit)
+		;
 }
 
 #ifdef __cplusplus

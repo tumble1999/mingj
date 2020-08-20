@@ -17,7 +17,7 @@
 #include "processes/proc_sched.cpp"
 #include "device.h"
 
-#include "dev_hello.cpp"
+#include "hello_mod.cpp"
 
 #define printk(fmt, ...) printf(fmt, __VA_ARGS__)
 
@@ -244,8 +244,6 @@ EMSCRIPTEN_BINDINGS(kernel_class)
 		.constructor()
 		.function("panic", &kernel::panic)
 		.function("ttywrite", &kernel::tty_write)
-		.function("hello_init", &kernel::hello_init)
-		.function("hello_exit", &kernel::hello_exit)
 		;
 }
 

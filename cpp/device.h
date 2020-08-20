@@ -6,40 +6,57 @@
 struct bus {
 	char* name;
 
-	virtual int match(struct device*,struct device_driver*)=0;
-	virtual int uevent(struct device*,struct device_driver*)=0;
-	virtual int probe(struct device*)=0;
+	int FUNC_PTR(match,struct device*,struct device_driver*);
+	int FUNC_PTR(uevent,struct device*,struct device_driver*);
+	int FUNC_PTR(probe,struct device*);
 
 };
+class kernel;
 struct module {
+private:
+		kernel* m_pkernel;
+protected:
+	int register_chrdev(int major, char* name, struct file_operations file_ops) {
+
+	}
+	int unregister_chrdev(int major, char* name) {
+		
+	}
+public:
+	module(kernel* p_pkernel) {
+		m_pkernel = p_pkernel;
+	}
 	char* name;
+
+	int init();
+	int exit();
 };
 
 struct device_driver {
 	char* name;
 	module* owner;
-	virtual int probe(struct device*)=0;
-	virtual int remove(struct device*)=0;
-	virtual void shutdown(struct device*)=0;
-	virtual int suspend(struct device*,char*)=0;
-	virtual int resume(struct device*)=0;
+	int FUNC_PTR(probe,struct device*);
+	int FUNC_PTR(remove,struct device*);
+	void FUNC_PTR(shutdown,struct device*);
+	int FUNC_PTR(suspend,struct device*,char*);
+	int FUNC_PTR(resume,struct device*);
 
 };
 
 struct device_type {
 	char* name;
-	virtual int event(struct device*, int, char*)=0;
-	virtual char* devnode(struct device*,mode_t,uid_t,gid_t)=0;
-	virtual void release(struct device*)=0;
+	int FUNC_PTR(event,struct device*, int, char*);
+	char* FUNC_PTR(devnode,struct device*,mode_t,uid_t,gid_t);
+	void FUNC_PTR(release,struct device*);
 };
 
 struct device_class {
 	char* name;
 	module* owner;
 
-	virtual int dev_event(struct device,int, char*)=0;
-	virtual char* devnode(struct device*, mode_t)=0;
-	virtual int resume(struct device*)=0;
+	int FUNC_PTR(dev_event,struct device,int, char*);
+	char* FUNC_PTR(devnode,struct device*, mode_t);
+	int FUNC_PTR(resume,struct device*);
 };
 
 struct device {

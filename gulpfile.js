@@ -10,7 +10,8 @@ var siteurl = "https://tumble1999.github.io/mingj/";
 
 var runtime_exports = [
 	"setValue",
-	"cwrap"
+	"cwrap",
+	"ccall"
 ]
 
 function buildCPP() {

@@ -31,7 +31,7 @@ public:
 		return 0;
 	}
 
-	int init()
+	virtual int init()
 	{
 		printf("Hello World\n");
 
@@ -50,7 +50,7 @@ public:
 		return 0;
 	}
 
-	int exit()
+	virtual int exit()
 	{
 		printf("Goodbye World\n");
 		unregister_chrdev(1,"Hello Driver");

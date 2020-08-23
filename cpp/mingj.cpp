@@ -35,21 +35,45 @@ typedef enum k_exception_t
 	DIV_ZERO = 0 // Division by zero.
 } k_exception_t;
 
-int kernel::chrdev_open(struct node *node, struct file *file)
-{
-	int major;
-
-	major = MAJOR(node->i_rdev);
-	if (major >= MAX_CHRDEV || !chrdevs[major].fops)
-		return -INVALID_MAJOR;
-	file->f_op = chrdevs[major].fops;
-	if (file->f_op->open)
-		return file->f_op->open(node, file);
-	return 0;
-}
 
 kernel::kernel()
 {
+	//rootdev
+	//driveinfo
+	//screeninfo
+	//aux device
+	memory_end = (1<<20)+(EXT_MEM_K<<10);
+	memory_end &= PAGE_MASK;
+	ramdisk_size = RAMDISK_SIZE;
+	
+	if(MOUNT_ROOT_RDONLY) {
+		//Set root mount flag
+	}
+
+	if((unsigned long)& end >= (1024*1024)) {
+		memory_start = (unsigned long) &end;
+		low_memory_start = PAGE_SIZE;
+	} else {
+		memory_start = 1024*1024;
+		low_memory_start = (unsigned long) & end;
+	}
+	low_memory_start = PAGE_ALIGN(low_memory_start);
+
+	//init paging
+	//init scheduling
+	//init malloc
+
+	//init chardevs
+	//init blkdevs
+
+	printf("MinGJ alpha\n");
+	//usermode
+	if(syscall(sys_fork,0,{})) {
+		init();
+	}
+}
+
+void kernel::init() {
 }
 
 struct device_struct *kernel::get_chrdevs()
@@ -85,8 +109,6 @@ int kernel::test()
 	
 	hello->exit();
 	delete hello;
-	
-	printf("chrdevs\n");
 	return 0;
 }
 
@@ -134,9 +156,9 @@ void kernel::panic(int exception)
 
 int kernel::tty_write(unsigned ch, std::string buf, int count) { return 0; }
 
-int kernel::syscall(int p_syscall, int argc, char **argv)
+int kernel::syscall(int p_syscall, int argc, char** argv)
 {
-	printf("[C++] %d: %s", p_syscall, sys_call_name(p_syscall));
+	printf("%d: %s", p_syscall, sys_call_name(p_syscall));
 	for (int i = 0; i < argc; i++)
 	{
 		printf(" %s", argv[i]);
@@ -155,16 +177,6 @@ int kernel::syscall(int p_syscall, int argc, char **argv)
 	case sys_write:
 		break;
 	case sys_open:
-		//char* filename
-		//int flags
-		//int mode
-		/*char*
-			filename = argv[0],
-			tmp;
-			int 
-			flags = argc>1?atoi(argv[1]):0,
-			mode = argc>2?atoi(argv[2]):0,
-			error;*/
 		break;
 	case sys_close:
 		break;

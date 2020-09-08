@@ -5,13 +5,10 @@
 #include "device.h"
 #include "sys/types.h"
 
-#define INVALID_MAJOR 1
-#define EXISTING_MAJOR 2
-
 struct file {
 	mode_t f_mode;
 	dev_t f_rdev;
-	//off_t f_pos;
+	off_t f_pos;
 	unsigned short f_flags;
 	unsigned short f_count;
 	unsigned short f_reada;
@@ -70,18 +67,22 @@ struct node {
 struct file_operations {
 	struct module* owner;
 	int FUNC_PTR(open,struct node*, struct file *);
-	size_t FUNC_PTR(read,struct file *, char *, size_t, int);
-	size_t FUNC_PTR(write,struct file *, char *, size_t, int);
+	size_t FUNC_PTR(read,struct node *, struct file *, char *, int);
+	size_t FUNC_PTR(write,struct node *, struct file *, char *, int);
 	int FUNC_PTR(close,struct node *, struct file *);
 };
 
 
 int module::register_chrdev(int major, const char* name, struct file_operations* fops) {
 	
-	if(major >=MAX_CHRDEV)
-		return -INVALID_MAJOR;
-	if(m_kernel->get_chrdev(major)->fops)
-		return -EXISTING_MAJOR;
+	if(major >=MAX_CHRDEV){
+		//TODO: Error code
+		return -1;
+	}
+	if(m_kernel->get_chrdev(major)->fops){
+		//TODO: Error code
+		return -1;
+	}
 	//member access into incomplete type 'class kernel'
 	m_kernel->get_chrdev(major)->name = name;
 	m_kernel->get_chrdev(major)->fops = fops;
@@ -91,13 +92,16 @@ int module::register_chrdev(int major, const char* name, struct file_operations*
 }
 int module::unregister_chrdev(int major, const char* name) {
 	if(major >= MAX_CHRDEV) {
-		return -INVALID_MAJOR;
+		//TODO: Error code
+		return -1;
 	}
 	if(!m_kernel->get_chrdev(major)->fops) {
-		return -INVALID_MAJOR;
+		//TODO: Error code
+		return -1;
 	}
 	if(strcmp(m_kernel->get_chrdev(major)->name,name)){
-		return -INVALID_MAJOR;
+		//TODO: Error code
+		return -1;
 	}
 	m_kernel->get_chrdev(major)->name = NULL;
 	m_kernel->get_chrdev(major)->fops = NULL;

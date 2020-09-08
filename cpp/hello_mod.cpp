@@ -13,16 +13,16 @@ public:
 		return 0;
 	}
 
-	static size_t read(struct file *pfile, char *buffer, size_t length, int offset)
+	static size_t read(struct node *pnode, struct file *pfile, char *buffer, int count)
 	{
 		printf("Hello Read\n");
 		return 0;
 	}
 
-	static size_t write(struct file *pfile, char *buffer, size_t length, int offset)
+	static size_t write(struct node *pnode, struct file *pfile, char *buffer, int count)
 	{
 		printf("Hello Write\n");
-		return length;
+		return count;
 	}
 
 	static int close(struct node *pnode, struct file *pfile)
@@ -43,7 +43,7 @@ public:
 			.close = close};
 
 		register_chrdev(
-			1,			   //major
+			100,	   //major
 			"Hello Driver", //name
 			&hello_file_ops);
 

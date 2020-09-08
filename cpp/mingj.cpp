@@ -16,6 +16,7 @@
 //Sybststems
 #include "processes/proc_sched.cpp"
 
+#include "mem.cpp"
 #include "hello_mod.cpp"
 
 #define printk(fmt, ...) printf(fmt, __VA_ARGS__)
@@ -37,40 +38,18 @@ typedef enum k_exception_t
 
 
 kernel::kernel()
+:mem(new memory_mod(this))
 {
-	//rootdev
-	//driveinfo
-	//screeninfo
-	//aux device
-	memory_end = (1<<20)+(EXT_MEM_K<<10);
-	memory_end &= PAGE_MASK;
-	ramdisk_size = RAMDISK_SIZE;
-	
-	if(MOUNT_ROOT_RDONLY) {
-		//Set root mount flag
-	}
-
-	if((unsigned long)& end >= (1024*1024)) {
-		memory_start = (unsigned long) &end;
-		low_memory_start = PAGE_SIZE;
-	} else {
-		memory_start = 1024*1024;
-		low_memory_start = (unsigned long) & end;
-	}
-	low_memory_start = PAGE_ALIGN(low_memory_start);
-
 	//init paging
 	//init scheduling
 	//init malloc
 
-	//init chardevs
-	//init blkdevs
-
 	printf("MinGJ alpha\n");
 	//usermode
-	if(syscall(sys_fork,0,{})) {
+	//start_usermode();
+	/*if(syscall(sys_fork,0,{})) {
 		init();
-	}
+	}*/
 }
 
 void kernel::init() {
@@ -99,6 +78,7 @@ struct device_struct *kernel::get_blkdev(unsigned int major)
 int kernel::test()
 {
 	printf("testing...\n");
+	mem->init();
 	hello_mod *hello = new hello_mod(this);
 	hello->init();
 	printf("chrdevs\n");

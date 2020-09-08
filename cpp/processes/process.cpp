@@ -31,7 +31,11 @@ public:
 
 	pid_t fork() {return 0;}
 	int execve(std::string pathname, unsigned int argc, std::vector<std::string> argv) {return 0;}
-	void exit(int status){}
+	void exit(int status)
+	{
+		this->exit_code = status;
+		return;
+	}
 };
 
 

@@ -1,7 +1,8 @@
+#ifndef _MODULE_H
+#define _MODULE_H
+
 #include "kernel.h"
 #include "device.h"
-
-//class kernel;
 
 class module {
 private:
@@ -17,3 +18,4 @@ public:
 	int init();
 	int exit();
 };
+#endif //!_MODULE_H

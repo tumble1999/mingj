@@ -86,6 +86,11 @@ int kernel::test()
 	{
 		printf("%d: %s\n",i,chrdevs[i].name);
 	}
+	printf("\nblkdevs\n");
+	for (unsigned int i = 0; i < MAX_BLKDEV; i++)
+	{
+		printf("%d: %s\n",i,blkdevs[i].name);
+	}
 	
 	hello->exit();
 	delete hello;

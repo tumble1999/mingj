@@ -43,7 +43,7 @@ public:
 			.close = close};
 
 		register_chrdev(
-			100,	   //major
+			2,	   //major
 			"Hello Driver", //name
 			&hello_file_ops);
 

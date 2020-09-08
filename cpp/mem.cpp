@@ -69,30 +69,28 @@ private:
 
 #define write_zero write_null
 
-	
-
 	static int memory_open(struct node *pnode, struct file *pfile)
 	{
 		struct file_operations ram_fops = {
-		//.owner = this,
-		.read = read_ram,
-		.write = write_ram};
-	struct file_operations mem_fops = {
-		//.owner = this,
-		.read = read_mem,
-		.write = write_mem};
-	struct file_operations null_fops = {
-		//.owner = this,
-		.read = read_null,
-		.write = write_null};
-	struct file_operations zero_fops = {
-		//.owner = this,
-		.read = read_zero,
-		.write = write_zero};
-	struct file_operations full_fops = {
-		//.owner = this,
-		.read = read_full,
-		.write = write_full};
+			//.owner = this,
+			.read = read_ram,
+			.write = write_ram};
+		struct file_operations mem_fops = {
+			//.owner = this,
+			.read = read_mem,
+			.write = write_mem};
+		struct file_operations null_fops = {
+			//.owner = this,
+			.read = read_null,
+			.write = write_null};
+		struct file_operations zero_fops = {
+			//.owner = this,
+			.read = read_zero,
+			.write = write_zero};
+		struct file_operations full_fops = {
+			//.owner = this,
+			.read = read_full,
+			.write = write_full};
 
 		switch (MINOR(pnode->i_rdev))
 		{
@@ -103,14 +101,14 @@ private:
 			pfile->f_op = &mem_fops;
 			break;
 		/*case 2:
-			pfile->f_op = &kmem_fops;
-			break;*/
+		pfile->f_op = &kmem_fops;
+		break;*/
 		case 3:
 			pfile->f_op = &null_fops;
 			break;
 		/*case 4:
-			pfile->f_op = &port_fops;
-			break;*/
+		pfile->f_op = &port_fops;
+		break;*/
 		case 5:
 			pfile->f_op = &zero_fops;
 			break;
@@ -131,9 +129,9 @@ public:
 
 	virtual int init()
 	{
-		printf("Initializing Memory Module");
+		printf("Initializing Memory Module\n");
 
-		/*struct file_operations memory_fops = {
+		struct file_operations memory_fops = {
 			.owner = this,
 			.open = memory_open,
 		};
@@ -142,12 +140,14 @@ public:
 		if (register_chrdev(MEM_MAJOR,"mem",&memory_fops))
 			printf("unable to get major %d for memory devs\n", MEM_MAJOR);
 
-		//init blkdevs*/
+		//init blkdevs
+		return 0;
 	}
 
 	virtual int exit()
 	{
 		//uninit chardevs
 		//uninit blkdevs
+		return 0;
 	}
 };
